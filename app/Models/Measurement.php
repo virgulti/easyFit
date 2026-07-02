@@ -76,6 +76,9 @@ class Measurement extends Model
     /**
      * Progress score: improves as weight approaches (and drops below) the configured max weight.
      */
+    /**
+     * @return Attribute<float, never>
+     */
     protected function progress(): Attribute
     {
         return Attribute::make(
@@ -89,6 +92,9 @@ class Measurement extends Model
 
     /**
      * BMI progress score: improves as BMI approaches (and drops below) the configured max BMI.
+     */
+    /**
+     * @return Attribute<float, never>
      */
     protected function bmiProgress(): Attribute
     {
@@ -104,6 +110,9 @@ class Measurement extends Model
     /**
      * Weight of body fat in kg, derived from weight and fat percentage.
      */
+    /**
+     * @return Attribute<float, never>
+     */
     protected function fatWeight(): Attribute
     {
         return Attribute::make(
@@ -113,6 +122,9 @@ class Measurement extends Model
 
     /**
      * Weight of muscle mass in kg, derived from weight and muscle percentage.
+     */
+    /**
+     * @return Attribute<float, never>
      */
     protected function muscleWeight(): Attribute
     {

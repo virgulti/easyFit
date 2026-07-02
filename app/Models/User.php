@@ -52,7 +52,7 @@ class User extends Authenticatable implements PasskeyUser
     /**
      * Get the measurements recorded by the user.
      *
-     * @return HasMany<Measurement>
+     * @return HasMany<Measurement, $this>
      */
     public function measurements(): HasMany
     {
