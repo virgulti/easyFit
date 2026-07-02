@@ -7,6 +7,7 @@ Route::inertia('/', 'Welcome')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
+    Route::inertia('bmi-guide', 'BmiGuide')->name('bmi-guide');
 });
 
 require __DIR__.'/settings.php';
