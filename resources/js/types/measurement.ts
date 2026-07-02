@@ -6,6 +6,11 @@ export type BmiBand = {
     color: BmiBandColor;
 };
 
+export type ChartSeries = {
+    labels: string[];
+    values: number[];
+};
+
 export type Measurement = {
     id: number;
     date: string;
