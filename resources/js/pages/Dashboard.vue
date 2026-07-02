@@ -54,11 +54,6 @@ const seriesColors = {
             />
 
             <div class="flex flex-wrap gap-2">
-                <Button variant="outline" as-child>
-                    <Link :href="MeasurementController.index()">
-                        Storico misurazioni
-                    </Link>
-                </Button>
                 <Button
                     size="lg"
                     class="text-base font-semibold"
@@ -66,7 +61,7 @@ const seriesColors = {
                     data-test="new-measurement-button"
                 >
                     <Link :href="MeasurementController.create()">
-                        Nuova misurazione
+                        Nuova misura
                     </Link>
                 </Button>
             </div>

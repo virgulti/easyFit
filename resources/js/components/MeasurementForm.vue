@@ -156,8 +156,7 @@ function submit(): void {
             <InputError :message="form.errors.bmi_value" />
         </div>
 
-        <div class="grid gap-6 sm:grid-cols-2">
-            <div class="grid content-start gap-2">
+        <div class="grid gap-2">
                 <Label class="text-base" for="bedtime">
                     A letto alle (opzionale)
                 </Label>
@@ -169,9 +168,9 @@ function submit(): void {
                     class="h-12 text-lg"
                 />
                 <InputError :message="serverErrors.bedtime" />
-            </div>
+        </div>
 
-            <div class="grid content-start gap-2">
+        <div class="grid gap-2">
                 <Label class="text-base" for="sleep_duration">
                     Durata sonno HH:mm (opzionale)
                 </Label>
@@ -182,7 +181,6 @@ function submit(): void {
                     class="h-12 text-lg"
                 />
                 <InputError :message="serverErrors.sleep_minutes" />
-            </div>
         </div>
 
         <Button
