@@ -47,6 +47,36 @@ test('dashboard exposes the 8 plan chart series with the expected shape', functi
         );
 });
 
+test('progress last 5 days is anchored on the most recent measurement date with gaps left null', function () {
+    $user = User::factory()->create();
+
+    $today = Carbon::today();
+
+    // Gaps on day-3 and day-1 relative to the most recent measurement (today).
+    Measurement::factory()->for($user)->create(['date' => $today->copy()->subDays(4), 'weight' => 80]);
+    Measurement::factory()->for($user)->create(['date' => $today->copy()->subDays(2), 'weight' => 78]);
+    Measurement::factory()->for($user)->create(['date' => $today, 'weight' => 76]);
+
+    $response = $this->actingAs($user)->get(route('dashboard'))->assertOk();
+
+    $page = $response->viewData('page')['props'];
+
+    expect($page['progress_last_5_days']['labels'])->toBe([
+        $today->copy()->subDays(4)->toDateString(),
+        $today->copy()->subDays(3)->toDateString(),
+        $today->copy()->subDays(2)->toDateString(),
+        $today->copy()->subDays(1)->toDateString(),
+        $today->toDateString(),
+    ]);
+
+    $values = $page['progress_last_5_days']['values'];
+    expect($values[1])->toBeNull()
+        ->and($values[3])->toBeNull()
+        ->and($values[0])->not->toBeNull()
+        ->and($values[2])->not->toBeNull()
+        ->and($values[4])->not->toBeNull();
+});
+
 test('dashboard loads the users measurements with a single query', function () {
     $user = User::factory()->create();
     Measurement::factory()->for($user)->count(10)->create();

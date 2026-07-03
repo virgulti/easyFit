@@ -1,6 +1,17 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, FolderGit2, LayoutGrid, History, CirclePlus, Scale } from '@lucide/vue';
+import {
+    LayoutGrid,
+    History,
+    CirclePlus,
+    Scale,
+    TrendingUp,
+    Weight,
+    Flame,
+    Dumbbell,
+    Gauge,
+} from '@lucide/vue';
+import MeasurementController from '@/actions/App/Http/Controllers/MeasurementController';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -14,8 +25,15 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import MeasurementController from '@/actions/App/Http/Controllers/MeasurementController';
-import { bmiGuide, dashboard } from '@/routes';
+import {
+    bmiGuide,
+    bmiProgressHistory,
+    dashboard,
+    fatWeightHistory,
+    muscleWeightHistory,
+    progressHistory,
+    weightHistory,
+} from '@/routes';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
@@ -33,6 +51,31 @@ const mainNavItems: NavItem[] = [
         title: 'Storico',
         href: MeasurementController.index(),
         icon: History,
+    },
+    {
+        title: 'Progress storico',
+        href: progressHistory(),
+        icon: TrendingUp,
+    },
+    {
+        title: 'Peso storico',
+        href: weightHistory(),
+        icon: Weight,
+    },
+    {
+        title: 'Massa grassa storico',
+        href: fatWeightHistory(),
+        icon: Flame,
+    },
+    {
+        title: 'Massa muscolare storico',
+        href: muscleWeightHistory(),
+        icon: Dumbbell,
+    },
+    {
+        title: 'Progress BMI storico',
+        href: bmiProgressHistory(),
+        icon: Gauge,
     },
 ];
 

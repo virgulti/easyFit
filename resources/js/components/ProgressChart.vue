@@ -31,10 +31,12 @@ const props = withDefaults(
         series: ChartSeries;
         lightColor?: string;
         darkColor?: string;
+        heightClass?: string;
     }>(),
     {
         lightColor: '#2563eb',
         darkColor: '#3b82f6',
+        heightClass: 'h-56',
     },
 );
 
@@ -154,12 +156,13 @@ const chartOptions = computed<ChartOptions<'line'>>(() => {
 
         <div
             v-if="series.values.length === 0"
-            class="flex h-56 items-center justify-center px-4 text-center text-sm text-muted-foreground"
+            :class="heightClass"
+            class="flex items-center justify-center px-4 text-center text-sm text-muted-foreground"
         >
             Nessun dato da mostrare: registra una misurazione per vedere il
             grafico.
         </div>
-        <div v-else class="mt-2 h-56">
+        <div v-else :class="heightClass" class="mt-2">
             <Line :data="chartData" :options="chartOptions" />
         </div>
     </section>

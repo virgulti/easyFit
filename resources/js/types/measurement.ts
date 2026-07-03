@@ -8,7 +8,7 @@ export type BmiBand = {
 
 export type ChartSeries = {
     labels: string[];
-    values: number[];
+    values: (number | null)[];
 };
 
 export type Measurement = {

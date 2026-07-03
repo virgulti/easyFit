@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Concerns\BuildsMeasurementChartSeries;
 use App\Models\Measurement;
 use App\Services\WeeklyAverageService;
 use Closure;
@@ -15,6 +16,8 @@ use Inertia\Response;
 
 class DashboardController extends Controller
 {
+    use BuildsMeasurementChartSeries;
+
     /**
      * Show the dashboard with the chart data series described in PLAN.md
      * (#schermata principale): progress over the last 5 days/weeks/6 months, plus the full
@@ -39,8 +42,8 @@ class DashboardController extends Controller
         ));
 
         return Inertia::render('Dashboard', [
-            'progress_last_5_days' => $this->measurementSeries(
-                $measurements->slice(-5)->values(),
+            'progress_last_5_days' => $this->lastDaysSeries(
+                $measurements,
                 fn (Measurement $measurement): float => $measurement->progress,
             ),
             'progress_last_5_weeks' => $this->weeklySeries(array_slice($weeks, -5), 'progress'),
@@ -69,21 +72,6 @@ class DashboardController extends Controller
     }
 
     /**
-     * Build a chart series (labels/values) from a collection of measurements.
-     *
-     * @param  Collection<int, Measurement>  $measurements
-     * @param  Closure(Measurement): float  $value
-     * @return array{labels: array<int, string>, values: array<int, float>}
-     */
-    private function measurementSeries(Collection $measurements, Closure $value): array
-    {
-        return [
-            'labels' => $measurements->map(fn (Measurement $measurement): string => $measurement->date->toDateString())->values()->all(),
-            'values' => $measurements->map($value)->values()->all(),
-        ];
-    }
-
-    /**
      * Build a chart series (labels/values) from WeeklyAverageService weeks.
      *
      * @param  array<int, array<string, mixed>>  $weeks
@@ -95,5 +83,38 @@ class DashboardController extends Controller
             'labels' => array_column($weeks, 'week_start'),
             'values' => array_column($weeks, $valueKey),
         ];
+    }
+
+    /**
+     * Build a chart series covering the last $days calendar days, anchored on the most
+     * recent measurement's date. Days without a measurement get a null value so the chart
+     * shows a gap instead of silently compressing to whichever records happen to exist.
+     *
+     * @param  Collection<int, Measurement>  $measurements
+     * @param  Closure(Measurement): float  $value
+     * @return array{labels: array<int, string>, values: array<int, float|null>}
+     */
+    private function lastDaysSeries(Collection $measurements, Closure $value, int $days = 5): array
+    {
+        $latest = $measurements->last();
+
+        if ($latest === null) {
+            return ['labels' => [], 'values' => []];
+        }
+
+        $byDate = $measurements->keyBy(fn (Measurement $measurement): string => $measurement->date->toDateString());
+
+        $labels = [];
+        $values = [];
+
+        for ($offset = $days - 1; $offset >= 0; $offset--) {
+            $date = $latest->date->copy()->subDays($offset)->toDateString();
+            $measurement = $byDate->get($date);
+
+            $labels[] = $date;
+            $values[] = $measurement === null ? null : $value($measurement);
+        }
+
+        return ['labels' => $labels, 'values' => $values];
     }
 }

@@ -1,0 +1,46 @@
+<script setup lang="ts">
+import { Head } from '@inertiajs/vue3';
+import Heading from '@/components/Heading.vue';
+import ProgressChart from '@/components/ProgressChart.vue';
+import { bmiProgressHistory, dashboard } from '@/routes';
+import type { ChartSeries } from '@/types';
+
+defineOptions({
+    layout: {
+        breadcrumbs: [
+            {
+                title: 'Dashboard',
+                href: dashboard(),
+            },
+            {
+                title: 'Progress BMI — storico completo',
+                href: bmiProgressHistory(),
+            },
+        ],
+    },
+});
+
+defineProps<{
+    bmi_progress_all: ChartSeries;
+}>();
+</script>
+
+<template>
+    <Head title="Progress BMI — storico completo" />
+
+    <div class="mx-auto flex w-full max-w-6xl flex-1 flex-col space-y-6 p-4">
+        <Heading
+            title="Progress BMI — storico completo"
+            description="L'andamento del tuo progress BMI su tutte le misurazioni registrate"
+        />
+
+        <ProgressChart
+            title="Progress BMI — storico completo"
+            :series="bmi_progress_all"
+            light-color="#0891b2"
+            dark-color="#0891b2"
+            height-class="h-[70vh]"
+            class="flex-1"
+        />
+    </div>
+</template>
