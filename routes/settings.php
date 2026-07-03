@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Settings\GoalController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\SecurityController;
 use Illuminate\Auth\Middleware\RequirePassword;
@@ -10,6 +11,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('settings/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::get('settings/goals', [GoalController::class, 'edit'])->name('goals.edit');
+    Route::put('settings/goals', [GoalController::class, 'update'])->name('goals.update');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

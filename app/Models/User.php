@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -77,5 +78,15 @@ class User extends Authenticatable implements PasskeyUser
     public function mealLogs(): HasMany
     {
         return $this->hasMany(MealLog::class);
+    }
+
+    /**
+     * Get the user's tracked goals (thresholds), if set.
+     *
+     * @return HasOne<Goal, $this>
+     */
+    public function goal(): HasOne
+    {
+        return $this->hasOne(Goal::class);
     }
 }
