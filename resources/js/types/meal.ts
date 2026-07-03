@@ -24,3 +24,8 @@ export type MealTotals = {
     calories: number;
     protein_grams: number;
 };
+
+export type MealThresholds = {
+    min_protein_grams: number | null;
+    max_calories_per_day: number | null;
+};

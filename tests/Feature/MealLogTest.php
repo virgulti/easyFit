@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Models\Goal;
 use App\Models\Meal;
 use App\Models\MealLog;
 use App\Models\User;
+use Inertia\Testing\AssertableInertia as Assert;
 
 test('a user cannot view, update or delete another users meal logs', function () {
     $owner = User::factory()->create();
@@ -215,4 +217,32 @@ test('meal log totals are correctly calculated for a single day', function () {
     expect($page['props']['mealLogs'])->toHaveCount(1)
         ->and($page['props']['totals']['calories'])->toBe(200)
         ->and($page['props']['totals']['protein_grams'])->toEqual(10.0);
+});
+
+test('thresholds are null when the user has not set a goal', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->get(route('meal-logs.index'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->where('thresholds.min_protein_grams', null)
+            ->where('thresholds.max_calories_per_day', null)
+        );
+});
+
+test('thresholds reflect the users configured goal', function () {
+    $user = User::factory()->create();
+    Goal::factory()->for($user)->create([
+        'min_protein_grams' => 160,
+        'max_calories_per_day' => 1500,
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('meal-logs.index'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->where('thresholds.min_protein_grams', 160)
+            ->where('thresholds.max_calories_per_day', 1500)
+        );
 });

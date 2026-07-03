@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import { ChevronLeft, ChevronRight } from '@lucide/vue';
+import { ChevronLeft, ChevronRight, CircleCheck, CircleX } from '@lucide/vue';
 import { computed } from 'vue';
 import MealLogController from '@/actions/App/Http/Controllers/MealLogController';
 import Heading from '@/components/Heading.vue';
@@ -8,13 +8,26 @@ import { Button } from '@/components/ui/button';
 import { mealTypeLabels } from '@/lib/meals';
 import { formatDecimal, formatItalianDate } from '@/lib/measurements';
 import { dashboard } from '@/routes';
-import type { MealLog, MealTotals } from '@/types';
+import type { MealLog, MealThresholds, MealTotals } from '@/types';
 
 const props = defineProps<{
     date: string;
     mealLogs: MealLog[];
     totals: MealTotals;
+    thresholds: MealThresholds;
 }>();
+
+const proteinGoalMet = computed(() =>
+    props.thresholds.min_protein_grams === null
+        ? null
+        : props.totals.protein_grams >= props.thresholds.min_protein_grams,
+);
+
+const caloriesGoalMet = computed(() =>
+    props.thresholds.max_calories_per_day === null
+        ? null
+        : props.totals.calories <= props.thresholds.max_calories_per_day,
+);
 
 defineOptions({
     layout: {
@@ -93,11 +106,37 @@ const isToday = computed(() => {
                 <p class="text-2xl font-semibold">
                     {{ totals.calories }} kcal
                 </p>
+                <p
+                    v-if="thresholds.max_calories_per_day !== null"
+                    class="mt-1 flex items-center gap-1 text-sm"
+                    :class="
+                        caloriesGoalMet
+                            ? 'text-green-600 dark:text-green-400'
+                            : 'text-red-600 dark:text-red-400'
+                    "
+                >
+                    <CircleCheck v-if="caloriesGoalMet" class="h-4 w-4" />
+                    <CircleX v-else class="h-4 w-4" />
+                    obiettivo max {{ thresholds.max_calories_per_day }} kcal
+                </p>
             </div>
             <div>
                 <p class="text-sm text-muted-foreground">Proteine totali</p>
                 <p class="text-2xl font-semibold">
                     {{ formatDecimal(totals.protein_grams) }}g
+                </p>
+                <p
+                    v-if="thresholds.min_protein_grams !== null"
+                    class="mt-1 flex items-center gap-1 text-sm"
+                    :class="
+                        proteinGoalMet
+                            ? 'text-green-600 dark:text-green-400'
+                            : 'text-red-600 dark:text-red-400'
+                    "
+                >
+                    <CircleCheck v-if="proteinGoalMet" class="h-4 w-4" />
+                    <CircleX v-else class="h-4 w-4" />
+                    obiettivo min {{ thresholds.min_protein_grams }}g
                 </p>
             </div>
         </div>

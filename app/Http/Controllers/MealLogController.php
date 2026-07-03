@@ -32,12 +32,18 @@ class MealLogController extends Controller
             ->orderBy('created_at')
             ->get();
 
+        $goal = $request->user()->goal;
+
         return Inertia::render('MealLogs/Index', [
             'date' => $date->toDateString(),
             'mealLogs' => $mealLogs,
             'totals' => [
                 'calories' => (int) $mealLogs->sum('calories'),
                 'protein_grams' => round((float) $mealLogs->sum('protein_grams'), 1),
+            ],
+            'thresholds' => [
+                'min_protein_grams' => $goal?->min_protein_grams,
+                'max_calories_per_day' => $goal?->max_calories_per_day,
             ],
         ]);
     }
