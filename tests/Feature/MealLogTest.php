@@ -88,7 +88,7 @@ test('registering a meal from the catalog with unchanged weight uses the meal\'s
     $response = $this->actingAs($user)->post(route('meal-logs.store'), [
         'meal_id' => $meal->id,
         'weight_grams' => 100,
-        'meal_type' => 'pranzo',
+        'meal_type' => 'lunch',
         'date' => '2026-05-01',
     ]);
 
@@ -113,7 +113,7 @@ test('registering a meal from the catalog with changed weight scales calories an
         'weight_grams' => 200, // double the reference weight
         'calories' => 999, // should be ignored
         'protein_grams' => 88.8, // should be ignored
-        'meal_type' => 'pranzo',
+        'meal_type' => 'lunch',
         'date' => '2026-05-01',
     ]);
 
@@ -128,8 +128,8 @@ test('registering an unusual meal without save_to_catalog does not create a cata
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->post(route('meal-logs.store'), [
-        'description' => 'Pasta al pomodoro',
-        'meal_type' => 'pranzo',
+        'description' => 'Pasta with tomato sauce',
+        'meal_type' => 'lunch',
         'weight_grams' => 150,
         'calories' => 300,
         'protein_grams' => 12.0,
@@ -146,8 +146,8 @@ test('registering an unusual meal with save_to_catalog creates both a log and a 
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->post(route('meal-logs.store'), [
-        'description' => 'Pasta al pomodoro',
-        'meal_type' => 'pranzo',
+        'description' => 'Pasta with tomato sauce',
+        'meal_type' => 'lunch',
         'weight_grams' => 150,
         'calories' => 300,
         'protein_grams' => 12.0,
@@ -163,11 +163,11 @@ test('registering an unusual meal with save_to_catalog creates both a log and a 
     $mealLog = $user->mealLogs()->first();
     $meal = $user->meals()->first();
 
-    expect($mealLog->description)->toBe('Pasta al pomodoro')
+    expect($mealLog->description)->toBe('Pasta with tomato sauce')
         ->and($mealLog->calories)->toBe(300)
         ->and((float) $mealLog->protein_grams)->toBe(12.0);
 
-    expect($meal->description)->toBe('Pasta al pomodoro')
+    expect($meal->description)->toBe('Pasta with tomato sauce')
         ->and($meal->reference_weight_grams)->toBe(150)
         ->and($meal->calories)->toBe(300)
         ->and((float) $meal->protein_grams)->toBe(12.0);
@@ -277,7 +277,7 @@ test('a cost can be recorded when registering a meal from the catalog', function
     $this->actingAs($user)->post(route('meal-logs.store'), [
         'meal_id' => $meal->id,
         'weight_grams' => $meal->reference_weight_grams,
-        'meal_type' => 'pranzo',
+        'meal_type' => 'lunch',
         'date' => '2026-05-01',
         'cost' => 8.5,
     ])->assertRedirect();
@@ -289,8 +289,8 @@ test('cost is optional and defaults to null', function () {
     $user = User::factory()->create();
 
     $this->actingAs($user)->post(route('meal-logs.store'), [
-        'description' => 'Pasta al pomodoro',
-        'meal_type' => 'pranzo',
+        'description' => 'Pasta with tomato sauce',
+        'meal_type' => 'lunch',
         'weight_grams' => 150,
         'calories' => 300,
         'protein_grams' => 12.0,

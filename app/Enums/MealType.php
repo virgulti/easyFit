@@ -6,8 +6,8 @@ namespace App\Enums;
 
 enum MealType: string
 {
-    case Colazione = 'colazione';
-    case Pranzo = 'pranzo';
-    case Cena = 'cena';
-    case Spuntino = 'spuntino';
+    case Breakfast = 'breakfast';
+    case Lunch = 'lunch';
+    case Dinner = 'dinner';
+    case Snack = 'snack';
 }
