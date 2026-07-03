@@ -58,4 +58,24 @@ class User extends Authenticatable implements PasskeyUser
     {
         return $this->hasMany(Measurement::class);
     }
+
+    /**
+     * Get the user's catalog of reusable meals.
+     *
+     * @return HasMany<Meal, $this>
+     */
+    public function meals(): HasMany
+    {
+        return $this->hasMany(Meal::class);
+    }
+
+    /**
+     * Get the user's registered meal log entries.
+     *
+     * @return HasMany<MealLog, $this>
+     */
+    public function mealLogs(): HasMany
+    {
+        return $this->hasMany(MealLog::class);
+    }
 }
