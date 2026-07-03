@@ -60,4 +60,20 @@ class Meal extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Scale this meal's calories and protein proportionally to a target weight, for when a
+     * meal is registered with a different weight than its catalog reference_weight_grams.
+     *
+     * @return array{calories: int, protein_grams: float}
+     */
+    public function scaledTo(int $targetWeightGrams): array
+    {
+        $ratio = $targetWeightGrams / $this->reference_weight_grams;
+
+        return [
+            'calories' => (int) round($this->calories * $ratio),
+            'protein_grams' => round((float) $this->protein_grams * $ratio, 1),
+        ];
+    }
 }
