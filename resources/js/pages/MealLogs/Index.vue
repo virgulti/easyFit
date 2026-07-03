@@ -5,7 +5,7 @@ import { computed } from 'vue';
 import MealLogController from '@/actions/App/Http/Controllers/MealLogController';
 import Heading from '@/components/Heading.vue';
 import { Button } from '@/components/ui/button';
-import { mealTypeLabels } from '@/lib/meals';
+import { formatCost, mealTypeLabels } from '@/lib/meals';
 import { formatDecimal, formatItalianDate } from '@/lib/measurements';
 import { dashboard } from '@/routes';
 import type { MealLog, MealThresholds, MealTotals } from '@/types';
@@ -99,7 +99,7 @@ const isToday = computed(() => {
         </div>
 
         <div
-            class="grid grid-cols-2 gap-4 rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border"
+            class="grid grid-cols-2 gap-4 rounded-xl border border-sidebar-border/70 p-4 sm:grid-cols-3 dark:border-sidebar-border"
         >
             <div>
                 <p class="text-sm text-muted-foreground">Calorie totali</p>
@@ -139,6 +139,12 @@ const isToday = computed(() => {
                     obiettivo min {{ thresholds.min_protein_grams }}g
                 </p>
             </div>
+            <div v-if="totals.cost !== null">
+                <p class="text-sm text-muted-foreground">Costo totale</p>
+                <p class="text-2xl font-semibold">
+                    {{ formatCost(totals.cost) }}
+                </p>
+            </div>
         </div>
 
         <div
@@ -174,6 +180,12 @@ const isToday = computed(() => {
                         <p class="text-sm text-muted-foreground">
                             {{ formatDecimal(mealLog.protein_grams) }}g
                             proteine
+                        </p>
+                        <p
+                            v-if="mealLog.cost !== null"
+                            class="text-sm text-muted-foreground"
+                        >
+                            {{ formatCost(mealLog.cost) }}
                         </p>
                     </div>
                 </Link>

@@ -42,6 +42,7 @@ class UpdateMealLogRequest extends FormRequest
             'date' => ['sometimes', 'required', 'date'],
             'meal_type' => ['sometimes', 'required', Rule::enum(MealType::class)],
             'weight_grams' => ['sometimes', 'required', 'integer', 'min:1', 'max:5000'],
+            'cost' => ['sometimes', 'nullable', 'numeric', 'min:0', 'max:9999.99'],
         ];
 
         if ($mealLog->meal_id === null) {

@@ -29,6 +29,7 @@ class MealLogFactory extends Factory
             'weight_grams' => fake()->numberBetween(50, 500),
             'calories' => fake()->numberBetween(80, 800),
             'protein_grams' => fake()->randomFloat(1, 2, 50),
+            'cost' => fake()->optional(0.7)->randomFloat(2, 1, 25),
             'date' => fake()->dateTimeBetween('-90 days', 'now'),
         ];
     }

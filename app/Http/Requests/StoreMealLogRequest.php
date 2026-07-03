@@ -39,6 +39,7 @@ class StoreMealLogRequest extends FormRequest
             'description' => ['required_without:meal_id', 'string', 'max:255'],
             'calories' => ['required_without:meal_id', 'integer', 'min:0', 'max:10000'],
             'protein_grams' => ['required_without:meal_id', 'numeric', 'min:0', 'max:500'],
+            'cost' => ['nullable', 'numeric', 'min:0', 'max:9999.99'],
             'save_to_catalog' => ['sometimes', 'boolean'],
         ];
 

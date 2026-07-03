@@ -43,6 +43,10 @@ const form = useForm({
     description: props.mealLog.description,
     calories: props.mealLog.calories,
     protein_grams: Number.parseFloat(props.mealLog.protein_grams),
+    cost:
+        props.mealLog.cost === null
+            ? (undefined as number | undefined)
+            : Number.parseFloat(props.mealLog.cost),
 });
 
 const isDeleting = ref(false);
@@ -61,6 +65,7 @@ function submit(): void {
             date: data.date,
             meal_type: data.meal_type,
             weight_grams: data.weight_grams,
+            cost: data.cost ?? null,
         })).submit(MealLogController.update(props.mealLog.id), {
             onSuccess: () =>
                 router.visit(
@@ -75,6 +80,7 @@ function submit(): void {
             description: data.description,
             calories: data.calories,
             protein_grams: data.protein_grams,
+            cost: data.cost ?? null,
         })).submit(MealLogController.update(props.mealLog.id), {
             onSuccess: () =>
                 router.visit(
@@ -204,6 +210,21 @@ function destroy(): void {
                     {{ scaledPreview.calories }} kcal ·
                     {{ formatDecimal(scaledPreview.protein_grams) }}g proteine
                 </p>
+            </div>
+
+            <div class="grid gap-2">
+                <Label class="text-base" for="cost">Costo (€, opzionale)</Label>
+                <Input
+                    id="cost"
+                    v-model.number="form.cost"
+                    type="number"
+                    min="0"
+                    max="9999.99"
+                    step="0.01"
+                    class="h-12 text-lg"
+                    placeholder="es. 8,50"
+                />
+                <InputError :message="form.errors.cost" />
             </div>
 
             <template v-if="meal === null">

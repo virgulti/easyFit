@@ -33,6 +33,7 @@ class MealLogController extends Controller
             ->get();
 
         $goal = $request->user()->goal;
+        $loggedCosts = $mealLogs->whereNotNull('cost');
 
         return Inertia::render('MealLogs/Index', [
             'date' => $date->toDateString(),
@@ -40,6 +41,7 @@ class MealLogController extends Controller
             'totals' => [
                 'calories' => (int) $mealLogs->sum('calories'),
                 'protein_grams' => round((float) $mealLogs->sum('protein_grams'), 1),
+                'cost' => $loggedCosts->isEmpty() ? null : round((float) $loggedCosts->sum('cost'), 2),
             ],
             'thresholds' => [
                 'min_protein_grams' => $goal?->min_protein_grams,
@@ -102,6 +104,7 @@ class MealLogController extends Controller
                 'weight_grams' => $data['weight_grams'],
                 'calories' => $scaled['calories'],
                 'protein_grams' => $scaled['protein_grams'],
+                'cost' => $data['cost'] ?? null,
                 'date' => $data['date'],
             ]);
         } else {
@@ -112,6 +115,7 @@ class MealLogController extends Controller
                 'weight_grams' => $data['weight_grams'],
                 'calories' => $data['calories'],
                 'protein_grams' => $data['protein_grams'],
+                'cost' => $data['cost'] ?? null,
                 'date' => $data['date'],
             ]);
 

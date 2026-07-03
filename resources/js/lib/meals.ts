@@ -25,3 +25,10 @@ export function scaleMeal(
         protein_grams: Math.round(Number(meal.protein_grams) * ratio * 10) / 10,
     };
 }
+
+/**
+ * Format a cost value in euros with an Italian comma separator ("8.5" -> "8,50 €").
+ */
+export function formatCost(value: string | number): string {
+    return `${Number(value).toFixed(2).replace('.', ',')} €`;
+}

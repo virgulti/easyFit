@@ -50,6 +50,7 @@ const form = useForm({
     description: '',
     calories: undefined as number | undefined,
     protein_grams: undefined as number | undefined,
+    cost: undefined as number | undefined,
     date: props.date,
     save_to_catalog: false,
 });
@@ -90,6 +91,7 @@ function switchMode(next: 'catalog' | 'unusual'): void {
     form.description = '';
     form.calories = undefined;
     form.protein_grams = undefined;
+    form.cost = undefined;
     form.save_to_catalog = false;
 }
 
@@ -100,6 +102,7 @@ function submit(): void {
                   meal_id: data.meal_id,
                   meal_type: data.meal_type,
                   weight_grams: data.weight_grams,
+                  cost: data.cost,
                   date: data.date,
               }
             : {
@@ -108,6 +111,7 @@ function submit(): void {
                   description: data.description,
                   calories: data.calories,
                   protein_grams: data.protein_grams,
+                  cost: data.cost,
                   date: data.date,
                   save_to_catalog: data.save_to_catalog,
               },
@@ -171,6 +175,21 @@ function submit(): void {
                     </Button>
                 </div>
                 <InputError :message="form.errors.meal_type" />
+            </div>
+
+            <div class="grid gap-2">
+                <Label class="text-base" for="cost">Costo (€, opzionale)</Label>
+                <Input
+                    id="cost"
+                    v-model.number="form.cost"
+                    type="number"
+                    min="0"
+                    max="9999.99"
+                    step="0.01"
+                    class="h-12 text-lg"
+                    placeholder="es. 8,50"
+                />
+                <InputError :message="form.errors.cost" />
             </div>
 
             <template v-if="mode === 'catalog'">

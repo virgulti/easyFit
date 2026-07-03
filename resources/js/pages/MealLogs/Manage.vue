@@ -3,7 +3,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import MealLogController from '@/actions/App/Http/Controllers/MealLogController';
 import Heading from '@/components/Heading.vue';
 import { Button } from '@/components/ui/button';
-import { mealTypeLabels } from '@/lib/meals';
+import { formatCost, mealTypeLabels } from '@/lib/meals';
 import { formatDecimal, formatItalianDate } from '@/lib/measurements';
 import { dashboard } from '@/routes';
 import type { MealLog } from '@/types';
@@ -76,6 +76,7 @@ defineOptions({
                             <th class="px-4 py-3 font-medium">Peso (g)</th>
                             <th class="px-4 py-3 font-medium">Calorie</th>
                             <th class="px-4 py-3 font-medium">Proteine (g)</th>
+                            <th class="px-4 py-3 font-medium">Costo</th>
                             <th class="px-4 py-3"></th>
                         </tr>
                     </thead>
@@ -98,6 +99,9 @@ defineOptions({
                             <td class="px-4 py-3">{{ mealLog.calories }}</td>
                             <td class="px-4 py-3">
                                 {{ formatDecimal(mealLog.protein_grams) }}
+                            </td>
+                            <td class="px-4 py-3">
+                                {{ mealLog.cost !== null ? formatCost(mealLog.cost) : '—' }}
                             </td>
                             <td class="px-4 py-3 text-right">
                                 <Button variant="outline" size="sm" as-child>
@@ -141,6 +145,10 @@ defineOptions({
                         <div>
                             <dt class="text-muted-foreground">Proteine</dt>
                             <dd>{{ formatDecimal(mealLog.protein_grams) }}g</dd>
+                        </div>
+                        <div v-if="mealLog.cost !== null">
+                            <dt class="text-muted-foreground">Costo</dt>
+                            <dd>{{ formatCost(mealLog.cost) }}</dd>
                         </div>
                     </dl>
 

@@ -21,6 +21,7 @@ use Illuminate\Support\Carbon;
  * @property int $weight_grams
  * @property int $calories
  * @property string $protein_grams
+ * @property string|null $cost
  * @property Carbon $date
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -33,6 +34,7 @@ use Illuminate\Support\Carbon;
     'weight_grams',
     'calories',
     'protein_grams',
+    'cost',
     'date',
 ])]
 class MealLog extends Model
@@ -52,6 +54,7 @@ class MealLog extends Model
             'weight_grams' => 'integer',
             'calories' => 'integer',
             'protein_grams' => 'decimal:1',
+            'cost' => 'decimal:2',
             'date' => 'date',
         ];
     }

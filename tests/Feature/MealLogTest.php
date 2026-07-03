@@ -269,3 +269,74 @@ test('thresholds reflect the users configured goal', function () {
             ->where('thresholds.max_calories_per_day', 1500)
         );
 });
+
+test('a cost can be recorded when registering a meal from the catalog', function () {
+    $user = User::factory()->create();
+    $meal = Meal::factory()->for($user)->create();
+
+    $this->actingAs($user)->post(route('meal-logs.store'), [
+        'meal_id' => $meal->id,
+        'weight_grams' => $meal->reference_weight_grams,
+        'meal_type' => 'pranzo',
+        'date' => '2026-05-01',
+        'cost' => 8.5,
+    ])->assertRedirect();
+
+    expect((float) $user->mealLogs()->first()->cost)->toBe(8.5);
+});
+
+test('cost is optional and defaults to null', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)->post(route('meal-logs.store'), [
+        'description' => 'Pasta al pomodoro',
+        'meal_type' => 'pranzo',
+        'weight_grams' => 150,
+        'calories' => 300,
+        'protein_grams' => 12.0,
+        'date' => '2026-05-01',
+    ])->assertRedirect();
+
+    expect($user->mealLogs()->first()->cost)->toBeNull();
+});
+
+test('cost can be updated and cleared', function () {
+    $user = User::factory()->create();
+    $mealLog = MealLog::factory()->for($user)->create(['cost' => 5.0]);
+
+    $this->actingAs($user)->put(route('meal-logs.update', $mealLog), [
+        'cost' => 12.25,
+    ])->assertSessionHasNoErrors();
+
+    expect((float) $mealLog->fresh()->cost)->toBe(12.25);
+
+    $this->actingAs($user)->put(route('meal-logs.update', $mealLog), [
+        'cost' => null,
+    ])->assertSessionHasNoErrors();
+
+    expect($mealLog->fresh()->cost)->toBeNull();
+});
+
+test('the daily total cost sums only entries with a recorded cost', function () {
+    $user = User::factory()->create();
+    MealLog::factory()->for($user)->create(['date' => '2026-05-01', 'cost' => 8.5]);
+    MealLog::factory()->for($user)->create(['date' => '2026-05-01', 'cost' => 4.25]);
+    MealLog::factory()->for($user)->create(['date' => '2026-05-01', 'cost' => null]);
+
+    $this->actingAs($user)
+        ->get(route('meal-logs.index', ['date' => '2026-05-01']))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->where('totals.cost', 12.75)
+        );
+});
+
+test('the daily total cost is null when no meal that day has a recorded cost', function () {
+    $user = User::factory()->create();
+    MealLog::factory()->for($user)->create(['date' => '2026-05-01', 'cost' => null]);
+
+    $this->actingAs($user)
+        ->get(route('meal-logs.index', ['date' => '2026-05-01']))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page->where('totals.cost', null));
+});

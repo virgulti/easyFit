@@ -17,12 +17,14 @@ export type MealLog = {
     weight_grams: number;
     calories: number;
     protein_grams: string;
+    cost: string | null;
     date: string;
 };
 
 export type MealTotals = {
     calories: number;
     protein_grams: number;
+    cost: number | null;
 };
 
 export type MealThresholds = {
