@@ -1,8 +1,12 @@
 # EasyFit
 
-A personal app for tracking body weight, nutrition, and fitness goals, day by day. Built as an
-experiment in multi-agent development (Claude/Sonnet as orchestrator, Antigravity for the Vue
-frontend, and a local model via aider/LM Studio for repetitive work).
+A personal app for tracking body weight, nutrition, and fitness goals, day by day.
+
+## Screenshots
+
+| Dashboard | New measurement | Log meal |
+| --- | --- | --- |
+| [![Dashboard](docs/screenshots/dashboard.png)](docs/screenshots/dashboard.png) | [![New measurement](docs/screenshots/new-measurement.png)](docs/screenshots/new-measurement.png) | [![Log meal](docs/screenshots/log-meal.png)](docs/screenshots/log-meal.png) |
 
 ## Features
 
