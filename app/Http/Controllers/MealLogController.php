@@ -116,6 +116,7 @@ class MealLogController extends Controller
 
         return Inertia::render('MealLogs/Edit', [
             'mealLog' => $mealLog,
+            'meal' => $mealLog->meal,
         ]);
     }
 
@@ -149,6 +150,6 @@ class MealLogController extends Controller
         $date = $mealLog->date->toDateString();
         $mealLog->delete();
 
-        return back(fallback: route('meal-logs.index', ['date' => $date]));
+        return to_route('meal-logs.index', ['date' => $date]);
     }
 }

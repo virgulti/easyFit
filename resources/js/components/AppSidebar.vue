@@ -10,7 +10,9 @@ import {
     Flame,
     Dumbbell,
     Gauge,
+    UtensilsCrossed,
 } from '@lucide/vue';
+import MealLogController from '@/actions/App/Http/Controllers/MealLogController';
 import MeasurementController from '@/actions/App/Http/Controllers/MeasurementController';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
@@ -53,6 +55,16 @@ const mainNavItems: NavItem[] = [
         icon: History,
     },
     {
+        title: 'Pasti',
+        href: MealLogController.index(),
+        icon: UtensilsCrossed,
+    },
+];
+
+// Read-only chart pages: grouped in the footer, alongside the BMI guide,
+// since the user doesn't interact with them like the items above.
+const footerNavItems: NavItem[] = [
+    {
         title: 'Progress storico',
         href: progressHistory(),
         icon: TrendingUp,
@@ -77,9 +89,6 @@ const mainNavItems: NavItem[] = [
         href: bmiProgressHistory(),
         icon: Gauge,
     },
-];
-
-const footerNavItems: NavItem[] = [
     {
         title: 'BMI guide',
         href: bmiGuide(),

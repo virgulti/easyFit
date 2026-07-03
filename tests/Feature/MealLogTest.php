@@ -20,6 +20,17 @@ test('a user cannot view, update or delete another users meal logs', function ()
         ->assertForbidden();
 });
 
+test('deleting a meal log redirects to the day index, not back to its now-missing edit page', function () {
+    $user = User::factory()->create();
+    $mealLog = MealLog::factory()->for($user)->create(['date' => '2026-05-01']);
+
+    $this->actingAs($user)
+        ->delete(route('meal-logs.destroy', $mealLog))
+        ->assertRedirect(route('meal-logs.index', ['date' => '2026-05-01']));
+
+    expect(MealLog::find($mealLog->id))->toBeNull();
+});
+
 test('a user cannot view another users meal logs in the index endpoint', function () {
     $userA = User::factory()->create();
     $userB = User::factory()->create();
