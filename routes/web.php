@@ -12,11 +12,11 @@ Route::get('/', fn () => redirect()->route(auth()->check() ? 'dashboard' : 'logi
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
-    Route::get('progress-storico', ProgressHistoryController::class)->name('progress-history');
-    Route::get('peso-storico', WeightHistoryController::class)->name('weight-history');
-    Route::get('massa-grassa-storico', FatWeightHistoryController::class)->name('fat-weight-history');
-    Route::get('massa-muscolare-storico', MuscleWeightHistoryController::class)->name('muscle-weight-history');
-    Route::get('bmi-progress-storico', BmiProgressHistoryController::class)->name('bmi-progress-history');
+    Route::get('progress-history', ProgressHistoryController::class)->name('progress-history');
+    Route::get('weight-history', WeightHistoryController::class)->name('weight-history');
+    Route::get('fat-weight-history', FatWeightHistoryController::class)->name('fat-weight-history');
+    Route::get('muscle-weight-history', MuscleWeightHistoryController::class)->name('muscle-weight-history');
+    Route::get('bmi-progress-history', BmiProgressHistoryController::class)->name('bmi-progress-history');
     Route::inertia('bmi-guide', 'BmiGuide')->name('bmi-guide');
 });
 
