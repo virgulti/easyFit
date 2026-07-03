@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call(MeasurementSeeder::class);
+        $this->call(MealSeeder::class);
     }
 }
