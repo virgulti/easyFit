@@ -33,6 +33,29 @@ test('deleting a meal log redirects to the day index, not back to its now-missin
     expect(MealLog::find($mealLog->id))->toBeNull();
 });
 
+test('the manage page lists only the authenticated users meal logs, newest first', function () {
+    $user = User::factory()->create();
+    $other = User::factory()->create();
+
+    MealLog::factory()->for($user)->create(['date' => '2026-06-01']);
+    MealLog::factory()->for($user)->create(['date' => '2026-06-10']);
+    MealLog::factory()->for($other)->create(['date' => '2026-06-15']);
+
+    $response = $this->actingAs($user)
+        ->withHeaders([
+            'X-Inertia' => 'true',
+            'X-Inertia-Version' => file_exists(public_path('build/manifest.json')) ? hash_file('xxh128', public_path('build/manifest.json')) : '',
+        ])
+        ->get(route('meal-logs.manage'))
+        ->assertOk();
+
+    $page = $response->json();
+
+    expect($page['props']['mealLogs'])->toHaveCount(2)
+        ->and($page['props']['mealLogs'][0]['date'])->toContain('2026-06-10')
+        ->and($page['props']['mealLogs'][1]['date'])->toContain('2026-06-01');
+});
+
 test('a user cannot view another users meal logs in the index endpoint', function () {
     $userA = User::factory()->create();
     $userB = User::factory()->create();

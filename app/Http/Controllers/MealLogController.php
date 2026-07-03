@@ -49,6 +49,22 @@ class MealLogController extends Controller
     }
 
     /**
+     * Show every registered meal for the authenticated user, newest first, so individual
+     * entries can be reviewed and edited without navigating day by day.
+     */
+    public function manage(Request $request): Response
+    {
+        $mealLogs = $request->user()->mealLogs()
+            ->orderByDesc('date')
+            ->orderByDesc('created_at')
+            ->get();
+
+        return Inertia::render('MealLogs/Manage', [
+            'mealLogs' => $mealLogs,
+        ]);
+    }
+
+    /**
      * Show the form for registering a meal, either from the catalog or as a one-off "pasto
      * inusuale".
      */

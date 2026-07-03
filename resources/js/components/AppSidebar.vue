@@ -11,6 +11,7 @@ import {
     Dumbbell,
     Gauge,
     UtensilsCrossed,
+    ClipboardList,
 } from '@lucide/vue';
 import MealLogController from '@/actions/App/Http/Controllers/MealLogController';
 import MeasurementController from '@/actions/App/Http/Controllers/MeasurementController';
@@ -58,6 +59,11 @@ const mainNavItems: NavItem[] = [
         title: 'Pasti',
         href: MealLogController.index(),
         icon: UtensilsCrossed,
+    },
+    {
+        title: 'Gestione pasti',
+        href: MealLogController.manage(),
+        icon: ClipboardList,
     },
 ];
 
