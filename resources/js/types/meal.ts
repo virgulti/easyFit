@@ -1,4 +1,4 @@
-export type MealType = 'colazione' | 'pranzo' | 'cena' | 'spuntino';
+export type MealType = 'breakfast' | 'lunch' | 'dinner' | 'snack';
 
 export type Meal = {
     id: number;

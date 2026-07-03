@@ -25,8 +25,8 @@ defineOptions({
     layout: {
         breadcrumbs: [
             { title: 'Dashboard', href: dashboard() },
-            { title: 'Pasti del giorno', href: MealLogController.index() },
-            { title: 'Modifica pasto', href: '#' },
+            { title: 'Meals', href: MealLogController.index() },
+            { title: 'Edit meal', href: '#' },
         ],
     },
 });
@@ -101,12 +101,12 @@ function destroy(): void {
 </script>
 
 <template>
-    <Head title="Modifica pasto" />
+    <Head title="Edit meal" />
 
     <div class="mx-auto w-full max-w-lg flex-1 p-4">
         <div class="mb-8 flex items-start justify-between gap-4">
             <Heading
-                title="Modifica pasto"
+                title="Edit meal"
                 :description="mealLog.description"
             />
 
@@ -117,26 +117,26 @@ function destroy(): void {
                         variant="ghost"
                         class="text-destructive hover:bg-destructive/10 hover:text-destructive"
                     >
-                        Elimina
+                        Delete
                     </Button>
                 </DialogTrigger>
 
                 <DialogContent>
-                    <DialogTitle>Elimina pasto</DialogTitle>
+                    <DialogTitle>Delete meal</DialogTitle>
                     <DialogDescription>
-                        Vuoi eliminare "{{ mealLog.description }}" dal
-                        registro? L'operazione non è reversibile.
+                        Do you want to remove "{{ mealLog.description }}"
+                        from the log? This can't be undone.
                     </DialogDescription>
                     <DialogFooter class="gap-2">
                         <DialogClose as-child>
-                            <Button variant="secondary">Annulla</Button>
+                            <Button variant="secondary">Cancel</Button>
                         </DialogClose>
                         <Button
                             variant="destructive"
                             :disabled="isDeleting"
                             @click="destroy"
                         >
-                            {{ isDeleting ? 'Eliminazione...' : 'Elimina' }}
+                            {{ isDeleting ? 'Deleting...' : 'Delete' }}
                         </Button>
                     </DialogFooter>
                 </DialogContent>
@@ -145,7 +145,7 @@ function destroy(): void {
 
         <form class="space-y-6" @submit.prevent="submit">
             <div class="grid gap-2">
-                <Label class="text-base" for="date">Data</Label>
+                <Label class="text-base" for="date">Date</Label>
                 <Input
                     id="date"
                     v-model="form.date"
@@ -157,7 +157,7 @@ function destroy(): void {
             </div>
 
             <div class="grid gap-2">
-                <Label class="text-base">Tipo pasto</Label>
+                <Label class="text-base">Meal type</Label>
                 <div class="grid grid-cols-4 gap-2">
                     <Button
                         v-for="type in mealTypes"
@@ -174,12 +174,12 @@ function destroy(): void {
             </div>
 
             <div v-if="meal !== null" class="grid gap-2">
-                <Label class="text-base">Descrizione</Label>
+                <Label class="text-base">Description</Label>
                 <p class="text-lg">{{ mealLog.description }}</p>
             </div>
             <div v-else class="grid gap-2">
                 <Label class="text-base" for="description">
-                    Descrizione
+                    Description
                 </Label>
                 <Input
                     id="description"
@@ -192,7 +192,7 @@ function destroy(): void {
             </div>
 
             <div class="grid gap-2">
-                <Label class="text-base" for="weight_grams">Peso (g)</Label>
+                <Label class="text-base" for="weight_grams">Weight (g)</Label>
                 <Input
                     id="weight_grams"
                     v-model.number="form.weight_grams"
@@ -208,12 +208,12 @@ function destroy(): void {
                     class="text-sm text-muted-foreground"
                 >
                     {{ scaledPreview.calories }} kcal ·
-                    {{ formatDecimal(scaledPreview.protein_grams) }}g proteine
+                    {{ formatDecimal(scaledPreview.protein_grams) }}g protein
                 </p>
             </div>
 
             <div class="grid gap-2">
-                <Label class="text-base" for="cost">Costo (€, opzionale)</Label>
+                <Label class="text-base" for="cost">Cost (€, optional)</Label>
                 <Input
                     id="cost"
                     v-model.number="form.cost"
@@ -222,7 +222,7 @@ function destroy(): void {
                     max="9999.99"
                     step="0.01"
                     class="h-12 text-lg"
-                    placeholder="es. 8,50"
+                    placeholder="e.g. 8.50"
                 />
                 <InputError :message="form.errors.cost" />
             </div>
@@ -230,7 +230,7 @@ function destroy(): void {
             <template v-if="meal === null">
                 <div class="grid gap-2">
                     <Label class="text-base" for="calories">
-                        Calorie (kcal)
+                        Calories (kcal)
                     </Label>
                     <Input
                         id="calories"
@@ -246,7 +246,7 @@ function destroy(): void {
 
                 <div class="grid gap-2">
                     <Label class="text-base" for="protein_grams">
-                        Proteine (g)
+                        Protein (g)
                     </Label>
                     <Input
                         id="protein_grams"
@@ -268,7 +268,7 @@ function destroy(): void {
                 class="h-12 w-full text-base"
                 :disabled="form.processing"
             >
-                {{ form.processing ? 'Salvataggio...' : 'Salva modifiche' }}
+                {{ form.processing ? 'Saving...' : 'Save changes' }}
             </Button>
         </form>
     </div>

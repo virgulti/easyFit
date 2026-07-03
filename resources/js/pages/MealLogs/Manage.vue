@@ -4,7 +4,7 @@ import MealLogController from '@/actions/App/Http/Controllers/MealLogController'
 import Heading from '@/components/Heading.vue';
 import { Button } from '@/components/ui/button';
 import { formatCost, mealTypeLabels } from '@/lib/meals';
-import { formatDecimal, formatItalianDate } from '@/lib/measurements';
+import { formatDecimal, formatDate } from '@/lib/measurements';
 import { dashboard } from '@/routes';
 import type { MealLog } from '@/types';
 
@@ -16,31 +16,31 @@ defineOptions({
     layout: {
         breadcrumbs: [
             { title: 'Dashboard', href: dashboard() },
-            { title: 'Gestione pasti', href: MealLogController.manage() },
+            { title: 'Manage meals', href: MealLogController.manage() },
         ],
     },
 });
 </script>
 
 <template>
-    <Head title="Gestione pasti" />
+    <Head title="Manage meals" />
 
     <div class="mx-auto w-full max-w-5xl flex-1 space-y-6 p-4">
         <div class="flex flex-wrap items-start justify-between gap-4">
             <Heading
-                title="Gestione pasti"
-                description="Tutti i pasti registrati, dal più recente"
+                title="Manage meals"
+                description="All logged meals, newest first"
             />
 
             <div class="flex flex-wrap gap-2">
                 <Button variant="outline" as-child>
                     <Link :href="MealLogController.index()">
-                        Pasti del giorno
+                        Today's meals
                     </Link>
                 </Button>
                 <Button as-child>
                     <Link :href="MealLogController.create()">
-                        Registra pasto
+                        Log meal
                     </Link>
                 </Button>
             </div>
@@ -51,11 +51,11 @@ defineOptions({
             class="rounded-xl border border-sidebar-border/70 p-8 text-center dark:border-sidebar-border"
         >
             <p class="text-muted-foreground">
-                Nessun pasto registrato finora.
+                No meals logged yet.
             </p>
             <Button class="mt-4" as-child>
                 <Link :href="MealLogController.create()">
-                    Registra il primo pasto
+                    Log your first meal
                 </Link>
             </Button>
         </div>
@@ -70,13 +70,13 @@ defineOptions({
                         <tr
                             class="border-b border-sidebar-border/70 text-left text-muted-foreground dark:border-sidebar-border"
                         >
-                            <th class="px-4 py-3 font-medium">Data</th>
-                            <th class="px-4 py-3 font-medium">Pasto</th>
-                            <th class="px-4 py-3 font-medium">Tipo</th>
-                            <th class="px-4 py-3 font-medium">Peso (g)</th>
-                            <th class="px-4 py-3 font-medium">Calorie</th>
-                            <th class="px-4 py-3 font-medium">Proteine (g)</th>
-                            <th class="px-4 py-3 font-medium">Costo</th>
+                            <th class="px-4 py-3 font-medium">Date</th>
+                            <th class="px-4 py-3 font-medium">Meal</th>
+                            <th class="px-4 py-3 font-medium">Type</th>
+                            <th class="px-4 py-3 font-medium">Weight (g)</th>
+                            <th class="px-4 py-3 font-medium">Calories</th>
+                            <th class="px-4 py-3 font-medium">Protein (g)</th>
+                            <th class="px-4 py-3 font-medium">Cost</th>
                             <th class="px-4 py-3"></th>
                         </tr>
                     </thead>
@@ -87,7 +87,7 @@ defineOptions({
                             class="border-b border-sidebar-border/70 last:border-b-0 dark:border-sidebar-border"
                         >
                             <td class="px-4 py-3 whitespace-nowrap">
-                                {{ formatItalianDate(mealLog.date) }}
+                                {{ formatDate(mealLog.date) }}
                             </td>
                             <td class="px-4 py-3">
                                 {{ mealLog.description }}
@@ -106,7 +106,7 @@ defineOptions({
                             <td class="px-4 py-3 text-right">
                                 <Button variant="outline" size="sm" as-child>
                                     <Link :href="MealLogController.edit(mealLog.id)">
-                                        Modifica
+                                        Edit
                                     </Link>
                                 </Button>
                             </td>
@@ -125,36 +125,36 @@ defineOptions({
                     <div class="flex items-center justify-between gap-2">
                         <p class="font-medium">{{ mealLog.description }}</p>
                         <p class="text-sm text-muted-foreground">
-                            {{ formatItalianDate(mealLog.date) }}
+                            {{ formatDate(mealLog.date) }}
                         </p>
                     </div>
 
                     <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                         <div>
-                            <dt class="text-muted-foreground">Tipo</dt>
+                            <dt class="text-muted-foreground">Type</dt>
                             <dd>{{ mealTypeLabels[mealLog.meal_type] }}</dd>
                         </div>
                         <div>
-                            <dt class="text-muted-foreground">Peso</dt>
+                            <dt class="text-muted-foreground">Weight</dt>
                             <dd>{{ mealLog.weight_grams }}g</dd>
                         </div>
                         <div>
-                            <dt class="text-muted-foreground">Calorie</dt>
+                            <dt class="text-muted-foreground">Calories</dt>
                             <dd>{{ mealLog.calories }} kcal</dd>
                         </div>
                         <div>
-                            <dt class="text-muted-foreground">Proteine</dt>
+                            <dt class="text-muted-foreground">Protein</dt>
                             <dd>{{ formatDecimal(mealLog.protein_grams) }}g</dd>
                         </div>
                         <div v-if="mealLog.cost !== null">
-                            <dt class="text-muted-foreground">Costo</dt>
+                            <dt class="text-muted-foreground">Cost</dt>
                             <dd>{{ formatCost(mealLog.cost) }}</dd>
                         </div>
                     </dl>
 
                     <Button variant="outline" size="sm" class="w-full" as-child>
                         <Link :href="MealLogController.edit(mealLog.id)">
-                            Modifica
+                            Edit
                         </Link>
                     </Button>
                 </li>

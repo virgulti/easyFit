@@ -25,7 +25,7 @@ const sidebarNavItems: NavItem[] = [
         href: editAppearance(),
     },
     {
-        title: 'Obiettivi',
+        title: 'Goals',
         href: editGoals(),
     },
 ];

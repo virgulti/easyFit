@@ -13,7 +13,7 @@ defineOptions({
                 href: dashboard(),
             },
             {
-                title: 'Nuova misura',
+                title: 'New measurement',
                 href: MeasurementController.create(),
             },
         ],
@@ -22,14 +22,14 @@ defineOptions({
 </script>
 
 <template>
-    <Head title="Nuova misura" />
+    <Head title="New measurement" />
 
     <div class="mx-auto w-full max-w-lg flex-1 p-4">
         <Heading
-            title="Nuova misura"
-            description="Registra i valori di oggi: digita solo le cifre, la terza diventa il decimale."
+            title="New measurement"
+            description="Log today's values: type just the digits, the third one becomes the decimal."
         />
 
-        <MeasurementForm submit-label="Salva misura" />
+        <MeasurementForm submit-label="Save measurement" />
     </div>
 </template>

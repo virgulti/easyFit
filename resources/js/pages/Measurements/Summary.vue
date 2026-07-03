@@ -12,7 +12,7 @@ import {
     bmiBandBadgeClasses,
     durationToMinutes,
     formatDecimal,
-    formatItalianDate,
+    formatDate,
     minutesToDuration,
 } from '@/lib/measurements';
 import { dashboard } from '@/routes';
@@ -26,7 +26,7 @@ defineOptions({
                 href: dashboard(),
             },
             {
-                title: 'Riepilogo misurazione',
+                title: 'Measurement summary',
                 href: '#',
             },
         ],
@@ -44,26 +44,26 @@ const props = defineProps<{
 }>();
 
 const mainValues = computed(() => [
-    { label: 'Peso', value: `${formatDecimal(props.measurement.weight)} kg` },
+    { label: 'Weight', value: `${formatDecimal(props.measurement.weight)} kg` },
     {
-        label: 'Massa grassa',
+        label: 'Body fat',
         value: `${formatDecimal(props.measurement.fat_perc)} %`,
     },
     {
-        label: 'Massa muscolare',
+        label: 'Muscle mass',
         value: `${formatDecimal(props.measurement.muscle_perc)} %`,
     },
 ]);
 
 const derivedValues = computed(() => [
     { label: 'Progress', value: formatDecimal(props.progress) },
-    { label: 'Progress BMI', value: formatDecimal(props.bmiProgress) },
+    { label: 'BMI progress', value: formatDecimal(props.bmiProgress) },
     {
-        label: 'Massa grassa (kg)',
+        label: 'Fat weight (kg)',
         value: `${formatDecimal(props.fatWeight, 2)} kg`,
     },
     {
-        label: 'Massa muscolare (kg)',
+        label: 'Muscle weight (kg)',
         value: `${formatDecimal(props.muscleWeight, 2)} kg`,
     },
 ]);
@@ -97,27 +97,27 @@ function submitOptional(): void {
 </script>
 
 <template>
-    <Head title="Riepilogo misurazione" />
+    <Head title="Measurement summary" />
 
     <div class="mx-auto w-full max-w-3xl flex-1 space-y-8 p-4">
         <div class="flex flex-wrap items-start justify-between gap-4">
             <Heading
-                title="Riepilogo misurazione"
-                :description="`Valori del ${formatItalianDate(measurement.date)}`"
+                title="Measurement summary"
+                :description="`Values from ${formatDate(measurement.date)}`"
             />
 
             <div class="flex flex-wrap gap-2">
                 <Button variant="outline" as-child>
-                    <Link :href="dashboard()">Torna alla dashboard</Link>
+                    <Link :href="dashboard()">Back to dashboard</Link>
                 </Button>
                 <Button variant="outline" as-child>
                     <Link :href="MeasurementController.edit(measurement.id)">
-                        Modifica
+                        Edit
                     </Link>
                 </Button>
                 <Button as-child>
                     <Link :href="MeasurementController.create()">
-                        Nuova misurazione
+                        New measurement
                     </Link>
                 </Button>
             </div>
@@ -130,15 +130,15 @@ function submitOptional(): void {
         >
             <span class="text-xl" aria-hidden="true">&#9650;</span>
             <p class="text-sm font-medium">
-                Miglioramento: il BMI è sceso rispetto alla misurazione
-                precedente.
+                Improvement: BMI is down compared to the previous
+                measurement.
             </p>
         </div>
         <div
             v-else-if="improvement === false"
             class="rounded-xl border border-sidebar-border/70 p-4 text-sm text-muted-foreground dark:border-sidebar-border"
         >
-            Nessun miglioramento del BMI rispetto alla misurazione precedente.
+            No BMI improvement compared to the previous measurement.
         </div>
 
         <section class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -190,14 +190,14 @@ function submitOptional(): void {
         >
             <Heading
                 variant="small"
-                title="Sonno e riflessioni"
-                description="Dati opzionali, modificabili direttamente da qui"
+                title="Sleep and reflections"
+                description="Optional data, editable right from here"
             />
 
             <form class="mt-4 space-y-6" @submit.prevent="submitOptional">
                 <div class="grid gap-6 sm:grid-cols-2">
                     <div class="grid content-start gap-2">
-                        <Label for="bedtime">A letto alle</Label>
+                        <Label for="bedtime">Bedtime</Label>
                         <Input
                             id="bedtime"
                             v-model="form.bedtime"
@@ -207,7 +207,7 @@ function submitOptional(): void {
                     </div>
 
                     <div class="grid content-start gap-2">
-                        <Label for="sleep_duration">Durata sonno (HH:mm)</Label>
+                        <Label for="sleep_duration">Sleep duration (HH:mm)</Label>
                         <Input
                             id="sleep_duration"
                             v-model="form.sleep_duration"
@@ -218,12 +218,12 @@ function submitOptional(): void {
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="notes">Riflessioni</Label>
+                    <Label for="notes">Reflections</Label>
                     <textarea
                         id="notes"
                         v-model="form.notes"
                         rows="4"
-                        placeholder="Come è andata oggi?"
+                        placeholder="How did today go?"
                         class="w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 md:text-sm dark:bg-input/30"
                     ></textarea>
                     <InputError :message="serverErrors.notes" />
@@ -235,7 +235,7 @@ function submitOptional(): void {
                         :disabled="form.processing"
                         data-test="save-optional-button"
                     >
-                        Salva
+                        Save
                     </Button>
                     <Transition
                         enter-active-class="transition ease-in-out"
@@ -247,7 +247,7 @@ function submitOptional(): void {
                             v-if="form.recentlySuccessful"
                             class="text-sm text-muted-foreground"
                         >
-                            Salvato.
+                            Saved.
                         </p>
                     </Transition>
                 </div>

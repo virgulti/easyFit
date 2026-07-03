@@ -13,7 +13,7 @@ defineOptions({
                 href: dashboard(),
             },
             {
-                title: 'Massa muscolare — storico completo',
+                title: 'Muscle weight — full history',
                 href: muscleWeightHistory(),
             },
         ],
@@ -26,16 +26,16 @@ defineProps<{
 </script>
 
 <template>
-    <Head title="Massa muscolare — storico completo" />
+    <Head title="Muscle weight — full history" />
 
     <div class="mx-auto flex w-full max-w-6xl flex-1 flex-col space-y-6 p-4">
         <Heading
-            title="Massa muscolare — storico completo"
-            description="L'andamento della tua massa muscolare (kg) su tutte le misurazioni registrate"
+            title="Muscle weight — full history"
+            description="How your muscle weight (kg) has evolved across all logged measurements"
         />
 
         <ProgressChart
-            title="Massa muscolare (kg) — storico completo"
+            title="Muscle weight (kg) — full history"
             :series="muscle_weight_all"
             light-color="#16a34a"
             dark-color="#16a34a"

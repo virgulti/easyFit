@@ -8,20 +8,20 @@ export function todayIsoDate(): string {
 }
 
 /**
- * Format a decimal value with an Italian comma separator ("80.5" -> "80,5").
+ * Format a decimal value with a fixed number of digits ("80.5" -> "80.5").
  */
 export function formatDecimal(
     value: string | number,
     decimals: number = 1,
 ): string {
-    return Number(value).toFixed(decimals).replace('.', ',');
+    return Number(value).toFixed(decimals);
 }
 
 /**
- * Format an ISO date (or datetime) string as an Italian date (DD/MM/YYYY).
+ * Format an ISO date (or datetime) string as a DD/MM/YYYY date.
  */
-export function formatItalianDate(date: string): string {
-    return new Intl.DateTimeFormat('it-IT', {
+export function formatDate(date: string): string {
+    return new Intl.DateTimeFormat('en-GB', {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',

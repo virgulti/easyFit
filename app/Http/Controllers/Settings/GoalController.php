@@ -30,7 +30,7 @@ class GoalController extends Controller
     {
         $request->user()->goal()->updateOrCreate([], $request->validated());
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Obiettivi aggiornati.')]);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('Goals updated.')]);
 
         return to_route('goals.edit');
     }

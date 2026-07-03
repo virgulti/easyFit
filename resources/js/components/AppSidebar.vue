@@ -41,7 +41,7 @@ import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Nuova misura',
+        title: 'New measurement',
         href: MeasurementController.create(),
         icon: CirclePlus,
     },
@@ -51,17 +51,17 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'Storico',
+        title: 'History',
         href: MeasurementController.index(),
         icon: History,
     },
     {
-        title: 'Pasti',
+        title: 'Meals',
         href: MealLogController.index(),
         icon: UtensilsCrossed,
     },
     {
-        title: 'Gestione pasti',
+        title: 'Manage meals',
         href: MealLogController.manage(),
         icon: ClipboardList,
     },
@@ -71,27 +71,27 @@ const mainNavItems: NavItem[] = [
 // since the user doesn't interact with them like the items above.
 const footerNavItems: NavItem[] = [
     {
-        title: 'Progress storico',
+        title: 'Progress history',
         href: progressHistory(),
         icon: TrendingUp,
     },
     {
-        title: 'Peso storico',
+        title: 'Weight history',
         href: weightHistory(),
         icon: Weight,
     },
     {
-        title: 'Massa grassa storico',
+        title: 'Fat weight history',
         href: fatWeightHistory(),
         icon: Flame,
     },
     {
-        title: 'Massa muscolare storico',
+        title: 'Muscle weight history',
         href: muscleWeightHistory(),
         icon: Dumbbell,
     },
     {
-        title: 'Progress BMI storico',
+        title: 'BMI progress history',
         href: bmiProgressHistory(),
         icon: Gauge,
     },

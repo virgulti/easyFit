@@ -13,7 +13,7 @@ defineOptions({
                 href: dashboard(),
             },
             {
-                title: 'Progress BMI — storico completo',
+                title: 'BMI progress — full history',
                 href: bmiProgressHistory(),
             },
         ],
@@ -26,16 +26,16 @@ defineProps<{
 </script>
 
 <template>
-    <Head title="Progress BMI — storico completo" />
+    <Head title="BMI progress — full history" />
 
     <div class="mx-auto flex w-full max-w-6xl flex-1 flex-col space-y-6 p-4">
         <Heading
-            title="Progress BMI — storico completo"
-            description="L'andamento del tuo progress BMI su tutte le misurazioni registrate"
+            title="BMI progress — full history"
+            description="How your BMI progress has evolved across all logged measurements"
         />
 
         <ProgressChart
-            title="Progress BMI — storico completo"
+            title="BMI progress — full history"
             :series="bmi_progress_all"
             light-color="#0891b2"
             dark-color="#0891b2"

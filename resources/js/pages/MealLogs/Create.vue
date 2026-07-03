@@ -22,7 +22,7 @@ defineOptions({
     layout: {
         breadcrumbs: [
             { title: 'Dashboard', href: dashboard() },
-            { title: 'Registra pasto', href: MealLogController.create() },
+            { title: 'Log meal', href: MealLogController.create() },
         ],
     },
 });
@@ -45,7 +45,7 @@ const filteredMeals = computed(() => {
 
 const form = useForm({
     meal_id: null as number | null,
-    meal_type: 'pranzo' as MealType,
+    meal_type: 'lunch' as MealType,
     weight_grams: undefined as number | undefined,
     description: '',
     calories: undefined as number | undefined,
@@ -122,12 +122,12 @@ function submit(): void {
 </script>
 
 <template>
-    <Head title="Registra pasto" />
+    <Head title="Log meal" />
 
     <div class="mx-auto w-full max-w-lg flex-1 p-4">
         <Heading
-            title="Registra pasto"
-            description="Scegli un pasto dal catalogo o registra un pasto inusuale"
+            title="Log meal"
+            description="Pick a meal from the catalog or log an unusual meal"
         />
 
         <div class="mb-6 grid grid-cols-2 gap-2">
@@ -136,20 +136,20 @@ function submit(): void {
                 :variant="mode === 'catalog' ? 'default' : 'outline'"
                 @click="switchMode('catalog')"
             >
-                Dal catalogo
+                From catalog
             </Button>
             <Button
                 type="button"
                 :variant="mode === 'unusual' ? 'default' : 'outline'"
                 @click="switchMode('unusual')"
             >
-                Pasto inusuale
+                Unusual meal
             </Button>
         </div>
 
         <form class="space-y-6" @submit.prevent="submit">
             <div class="grid gap-2">
-                <Label class="text-base" for="date">Data</Label>
+                <Label class="text-base" for="date">Date</Label>
                 <Input
                     id="date"
                     v-model="form.date"
@@ -161,7 +161,7 @@ function submit(): void {
             </div>
 
             <div class="grid gap-2">
-                <Label class="text-base">Tipo pasto</Label>
+                <Label class="text-base">Meal type</Label>
                 <div class="grid grid-cols-4 gap-2">
                     <Button
                         v-for="type in mealTypes"
@@ -178,7 +178,7 @@ function submit(): void {
             </div>
 
             <div class="grid gap-2">
-                <Label class="text-base" for="cost">Costo (€, opzionale)</Label>
+                <Label class="text-base" for="cost">Cost (€, optional)</Label>
                 <Input
                     id="cost"
                     v-model.number="form.cost"
@@ -187,7 +187,7 @@ function submit(): void {
                     max="9999.99"
                     step="0.01"
                     class="h-12 text-lg"
-                    placeholder="es. 8,50"
+                    placeholder="e.g. 8.50"
                 />
                 <InputError :message="form.errors.cost" />
             </div>
@@ -195,14 +195,14 @@ function submit(): void {
             <template v-if="mode === 'catalog'">
                 <div class="grid gap-2">
                     <Label class="text-base" for="meal-filter">
-                        Cerca pasto
+                        Search meals
                     </Label>
                     <Input
                         id="meal-filter"
                         v-model="filterText"
                         type="text"
                         class="h-12 text-lg"
-                        placeholder="es. pollo, yogurt..."
+                        placeholder="e.g. chicken, yogurt..."
                     />
                 </div>
 
@@ -213,7 +213,7 @@ function submit(): void {
                         v-if="filteredMeals.length === 0"
                         class="p-4 text-center text-sm text-muted-foreground"
                     >
-                        Nessun pasto trovato.
+                        No meals found.
                     </p>
                     <button
                         v-for="meal in filteredMeals"
@@ -232,7 +232,7 @@ function submit(): void {
                             {{ mealTypeLabels[meal.meal_type] }} ·
                             {{ meal.reference_weight_grams }}g ·
                             {{ meal.calories }} kcal ·
-                            {{ formatDecimal(meal.protein_grams) }}g proteine
+                            {{ formatDecimal(meal.protein_grams) }}g protein
                         </p>
                     </button>
                 </div>
@@ -240,7 +240,7 @@ function submit(): void {
 
                 <div v-if="selectedMeal" class="grid gap-2">
                     <Label class="text-base" for="weight_grams">
-                        Peso (g)
+                        Weight (g)
                     </Label>
                     <Input
                         id="weight_grams"
@@ -259,7 +259,7 @@ function submit(): void {
                     >
                         {{ scaledPreview.calories }} kcal ·
                         {{ formatDecimal(scaledPreview.protein_grams) }}g
-                        proteine
+                        protein
                     </p>
                 </div>
             </template>
@@ -267,14 +267,14 @@ function submit(): void {
             <template v-else>
                 <div class="grid gap-2">
                     <Label class="text-base" for="description">
-                        Descrizione
+                        Description
                     </Label>
                     <Input
                         id="description"
                         v-model="form.description"
                         type="text"
                         class="h-12 text-lg"
-                        placeholder="es. Cena fuori con amici"
+                        placeholder="e.g. Dinner out with friends"
                         required
                     />
                     <InputError :message="form.errors.description" />
@@ -282,7 +282,7 @@ function submit(): void {
 
                 <div class="grid gap-2">
                     <Label class="text-base" for="weight_grams_unusual">
-                        Peso (g)
+                        Weight (g)
                     </Label>
                     <Input
                         id="weight_grams_unusual"
@@ -298,7 +298,7 @@ function submit(): void {
 
                 <div class="grid gap-2">
                     <Label class="text-base" for="calories">
-                        Calorie (kcal)
+                        Calories (kcal)
                     </Label>
                     <Input
                         id="calories"
@@ -314,7 +314,7 @@ function submit(): void {
 
                 <div class="grid gap-2">
                     <Label class="text-base" for="protein_grams">
-                        Proteine (g)
+                        Protein (g)
                     </Label>
                     <Input
                         id="protein_grams"
@@ -331,7 +331,7 @@ function submit(): void {
 
                 <Label class="flex items-center gap-3 text-base">
                     <Checkbox v-model="form.save_to_catalog" />
-                    Salva nel catalogo per il futuro
+                    Save to catalog for next time
                 </Label>
             </template>
 
@@ -341,7 +341,7 @@ function submit(): void {
                 class="h-12 w-full text-base"
                 :disabled="form.processing || !canSubmit"
             >
-                {{ form.processing ? 'Salvataggio...' : 'Registra pasto' }}
+                {{ form.processing ? 'Saving...' : 'Log meal' }}
             </Button>
         </form>
     </div>

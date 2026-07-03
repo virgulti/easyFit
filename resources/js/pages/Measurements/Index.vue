@@ -9,7 +9,7 @@ import {
     bmiBandBadgeClasses,
     bmiBandFor,
     formatDecimal,
-    formatItalianDate,
+    formatDate,
     minutesToDuration,
     progressFor,
 } from '@/lib/measurements';
@@ -24,7 +24,7 @@ defineOptions({
                 href: dashboard(),
             },
             {
-                title: 'Storico misurazioni',
+                title: 'Measurement history',
                 href: MeasurementController.index(),
             },
         ],
@@ -71,11 +71,11 @@ function sleepInfo(measurement: Measurement): string {
     const parts: string[] = [];
 
     if (measurement.bedtime) {
-        parts.push(`a letto ${measurement.bedtime.slice(0, 5)}`);
+        parts.push(`in bed at ${measurement.bedtime.slice(0, 5)}`);
     }
 
     if (measurement.sleep_minutes !== null) {
-        parts.push(`sonno ${minutesToDuration(measurement.sleep_minutes)}`);
+        parts.push(`slept ${minutesToDuration(measurement.sleep_minutes)}`);
     }
 
     return parts.join(' · ');
@@ -83,22 +83,22 @@ function sleepInfo(measurement: Measurement): string {
 </script>
 
 <template>
-    <Head title="Storico misurazioni" />
+    <Head title="Measurement history" />
 
     <div class="mx-auto w-full max-w-5xl flex-1 space-y-6 p-4">
         <div class="flex flex-wrap items-start justify-between gap-4">
             <Heading
-                title="Storico misurazioni"
-                description="Tutte le misurazioni, dalla più recente"
+                title="Measurement history"
+                description="All measurements, newest first"
             />
 
             <div class="flex flex-wrap gap-2">
                 <Button variant="outline" as-child>
-                    <Link :href="dashboard()">Torna alla dashboard</Link>
+                    <Link :href="dashboard()">Back to dashboard</Link>
                 </Button>
                 <Button as-child>
                     <Link :href="MeasurementController.create()">
-                        Nuova misurazione
+                        New measurement
                     </Link>
                 </Button>
             </div>
@@ -109,11 +109,11 @@ function sleepInfo(measurement: Measurement): string {
             class="rounded-xl border border-sidebar-border/70 p-8 text-center dark:border-sidebar-border"
         >
             <p class="text-muted-foreground">
-                Nessuna misurazione registrata finora.
+                No measurements logged yet.
             </p>
             <Button class="mt-4" as-child>
                 <Link :href="MeasurementController.create()">
-                    Registra la prima misurazione
+                    Log your first measurement
                 </Link>
             </Button>
         </div>
@@ -128,13 +128,13 @@ function sleepInfo(measurement: Measurement): string {
                         <tr
                             class="border-b border-sidebar-border/70 text-left text-muted-foreground dark:border-sidebar-border"
                         >
-                            <th class="px-4 py-3 font-medium">Data</th>
-                            <th class="px-4 py-3 font-medium">Peso (kg)</th>
-                            <th class="px-4 py-3 font-medium">Grassa (%)</th>
-                            <th class="px-4 py-3 font-medium">Muscoli (%)</th>
+                            <th class="px-4 py-3 font-medium">Date</th>
+                            <th class="px-4 py-3 font-medium">Weight (kg)</th>
+                            <th class="px-4 py-3 font-medium">Fat (%)</th>
+                            <th class="px-4 py-3 font-medium">Muscle (%)</th>
                             <th class="px-4 py-3 font-medium">BMI</th>
                             <th class="px-4 py-3 font-medium">Progress</th>
-                            <th class="px-4 py-3 font-medium">Sonno</th>
+                            <th class="px-4 py-3 font-medium">Sleep</th>
                             <th class="px-4 py-3"></th>
                         </tr>
                     </thead>
@@ -147,13 +147,13 @@ function sleepInfo(measurement: Measurement): string {
                             <td class="px-4 py-3 whitespace-nowrap">
                                 <span class="flex items-center gap-2">
                                     {{
-                                        formatItalianDate(row.measurement.date)
+                                        formatDate(row.measurement.date)
                                     }}
                                     <span
                                         v-if="row.improvement === true"
                                         class="text-green-600 dark:text-green-400"
-                                        title="BMI migliorato rispetto alla misurazione precedente"
-                                        aria-label="Miglioramento"
+                                        title="BMI improved since the previous measurement"
+                                        aria-label="Improvement"
                                     >
                                         &#9650;
                                     </span>
@@ -198,7 +198,7 @@ function sleepInfo(measurement: Measurement): string {
                                             )
                                         "
                                     >
-                                        Modifica
+                                        Edit
                                     </Link>
                                 </Button>
                             </td>
@@ -216,12 +216,12 @@ function sleepInfo(measurement: Measurement): string {
                 >
                     <div class="flex items-center justify-between gap-2">
                         <p class="flex items-center gap-2 font-medium">
-                            {{ formatItalianDate(row.measurement.date) }}
+                            {{ formatDate(row.measurement.date) }}
                             <span
                                 v-if="row.improvement === true"
                                 class="text-green-600 dark:text-green-400"
-                                title="BMI migliorato rispetto alla misurazione precedente"
-                                aria-label="Miglioramento"
+                                title="BMI improved since the previous measurement"
+                                aria-label="Improvement"
                             >
                                 &#9650;
                             </span>
@@ -236,7 +236,7 @@ function sleepInfo(measurement: Measurement): string {
 
                     <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                         <div>
-                            <dt class="text-muted-foreground">Peso</dt>
+                            <dt class="text-muted-foreground">Weight</dt>
                             <dd>
                                 {{ formatDecimal(row.measurement.weight) }} kg
                             </dd>
@@ -248,14 +248,14 @@ function sleepInfo(measurement: Measurement): string {
                             </dd>
                         </div>
                         <div>
-                            <dt class="text-muted-foreground">Massa grassa</dt>
+                            <dt class="text-muted-foreground">Body fat</dt>
                             <dd>
                                 {{ formatDecimal(row.measurement.fat_perc) }} %
                             </dd>
                         </div>
                         <div>
                             <dt class="text-muted-foreground">
-                                Massa muscolare
+                                Muscle mass
                             </dt>
                             <dd>
                                 {{ formatDecimal(row.measurement.muscle_perc) }}
@@ -267,7 +267,7 @@ function sleepInfo(measurement: Measurement): string {
                             <dd>{{ row.progress }}</dd>
                         </div>
                         <div v-if="row.sleep">
-                            <dt class="text-muted-foreground">Sonno</dt>
+                            <dt class="text-muted-foreground">Sleep</dt>
                             <dd>{{ row.sleep }}</dd>
                         </div>
                     </dl>
@@ -278,7 +278,7 @@ function sleepInfo(measurement: Measurement): string {
                                 MeasurementController.edit(row.measurement.id)
                             "
                         >
-                            Modifica
+                            Edit
                         </Link>
                     </Button>
                 </li>

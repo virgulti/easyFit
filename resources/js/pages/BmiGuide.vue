@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
+import { BookOpen, Scale, ArrowLeft } from '@lucide/vue';
 import Heading from '@/components/Heading.vue';
 import { Button } from '@/components/ui/button';
 import { dashboard } from '@/routes';
-import { BookOpen, Scale, ArrowLeft } from '@lucide/vue';
 
 defineOptions({
     layout: {
@@ -13,7 +13,7 @@ defineOptions({
                 href: dashboard(),
             },
             {
-                title: 'Guida BMI',
+                title: 'BMI guide',
                 href: '/bmi-guide',
             },
         ],
@@ -22,50 +22,50 @@ defineOptions({
 
 const bmiBands = [
     {
-        range: '< 18,0',
-        label: 'Sottopeso (Underweight)',
+        range: '< 18.0',
+        label: 'Underweight',
         color: 'gray',
-        description: 'Il peso corporeo è inferiore alla norma. Potrebbe essere opportuno consultare un nutrizionista.',
+        description: 'Body weight is below the norm. It may be worth consulting a nutritionist.',
         classes: 'border-slate-200 bg-slate-50/50 text-slate-700 dark:border-slate-800 dark:bg-slate-900/30 dark:text-slate-300',
         dotClass: 'bg-slate-400',
     },
     {
-        range: '18,0 - 22,9',
-        label: 'Normopeso ottimale (Normal)',
+        range: '18.0 - 22.9',
+        label: 'Normal (optimal)',
         color: 'green',
-        description: 'La fascia di peso ideale per la salute cardiovascolare e metabolica complessiva.',
+        description: 'The ideal weight range for overall cardiovascular and metabolic health.',
         classes: 'border-emerald-200 bg-emerald-50/40 text-emerald-800 dark:border-emerald-900/30 dark:bg-emerald-950/20 dark:text-emerald-300',
         dotClass: 'bg-emerald-500',
     },
     {
-        range: '23,0 - 24,9',
-        label: 'Normopeso limite (Normal)',
+        range: '23.0 - 24.9',
+        label: 'Normal (upper limit)',
         color: 'yellow',
-        description: 'Peso nella norma ma al limite superiore. Ottimo per mantenere stabilità fisica.',
+        description: 'Within the normal range but at the upper limit. Good for maintaining physical stability.',
         classes: 'border-yellow-200 bg-yellow-50/40 text-yellow-800 dark:border-yellow-900/30 dark:bg-yellow-950/20 dark:text-yellow-300',
         dotClass: 'bg-yellow-500',
     },
     {
-        range: '25,0 - 28,9',
-        label: 'Sovrappeso moderato (Overweight)',
+        range: '25.0 - 28.9',
+        label: 'Overweight (moderate)',
         color: 'dark-yellow',
-        description: 'Fascia di sovrappeso iniziale. Monitorare alimentazione e attività fisica.',
+        description: 'Early overweight range. Worth monitoring diet and physical activity.',
         classes: 'border-amber-200 bg-amber-50/40 text-amber-800 dark:border-amber-900/30 dark:bg-amber-950/20 dark:text-amber-300',
         dotClass: 'bg-amber-500',
     },
     {
-        range: '29,0 - 29,9',
-        label: 'Sovrappeso elevato (Overweight)',
+        range: '29.0 - 29.9',
+        label: 'Overweight (high)',
         color: 'orange',
-        description: 'Fascia vicina all\'obesità. Si consiglia di adottare uno stile di vita più attivo.',
+        description: 'Close to the obesity range. A more active lifestyle is recommended.',
         classes: 'border-orange-200 bg-orange-50/40 text-orange-800 dark:border-orange-900/30 dark:bg-orange-950/20 dark:text-orange-300',
         dotClass: 'bg-orange-500',
     },
     {
-        range: '≥ 30,0',
-        label: 'Obesità (Obese)',
+        range: '≥ 30.0',
+        label: 'Obese',
         color: 'red',
-        description: 'Peso corporeo significativamente superiore ai limiti di salute consigliati. Si consiglia un parere medico.',
+        description: 'Body weight significantly above recommended health limits. Medical advice is recommended.',
         classes: 'border-red-200 bg-red-50/40 text-red-800 dark:border-red-900/30 dark:bg-red-950/20 dark:text-red-300',
         dotClass: 'bg-red-500',
     },
@@ -73,19 +73,19 @@ const bmiBands = [
 </script>
 
 <template>
-    <Head title="Guida BMI" />
+    <Head title="BMI guide" />
 
     <div class="mx-auto w-full max-w-4xl flex-1 space-y-6 p-4">
         <div class="flex flex-wrap items-start justify-between gap-4">
             <Heading
-                title="Guida BMI"
-                description="Legenda dei limiti dell'Indice di Massa Corporea (BMI)"
+                title="BMI guide"
+                description="Reference ranges for Body Mass Index (BMI)"
             />
 
             <Button variant="outline" as-child>
                 <Link :href="dashboard()">
                     <ArrowLeft class="mr-2 h-4 w-4" />
-                    Torna alla dashboard
+                    Back to dashboard
                 </Link>
             </Button>
         </div>
@@ -97,10 +97,10 @@ const bmiBands = [
                     <Scale class="h-6 w-6" />
                 </div>
                 <div class="space-y-1">
-                    <h3 class="font-semibold text-lg">Cos'è il BMI?</h3>
+                    <h3 class="font-semibold text-lg">What is BMI?</h3>
                     <p class="text-sm text-muted-foreground leading-relaxed">
-                        L'Indice di Massa Corporea (IMC o BMI, dall'inglese <em>Body Mass Index</em>) è un valore biometrico calcolato come rapporto tra il peso (in kg) e il quadrato dell'altezza (in metri).
-                        Rappresenta un indicatore rapido dello stato di peso forma ed è diviso in fasce di colore all'interno dell'applicazione per aiutarti a visualizzare i progressi nel tempo.
+                        Body Mass Index (BMI) is a biometric value calculated as the ratio between weight (in kg) and the square of height (in meters).
+                        It's a quick indicator of your weight status, and is split into color-coded ranges throughout the app to help you visualize progress over time.
                     </p>
                 </div>
             </div>
@@ -135,8 +135,8 @@ const bmiBands = [
         <div class="rounded-xl border border-sidebar-border p-6 text-center text-xs text-muted-foreground">
             <BookOpen class="mx-auto mb-2 h-5 w-5 opacity-50" />
             <p>
-                Nota: Il BMI è una stima indicativa e non tiene conto direttamente della distribuzione della massa muscolare rispetto a quella grassa.
-                Per un'analisi approfondita della composizione corporea, monitora anche le percentuali di grasso e muscolo presenti nelle tabelle e nei grafici storici.
+                Note: BMI is a rough estimate and doesn't directly account for the balance between muscle mass and fat mass.
+                For a deeper look at body composition, also track your fat and muscle percentages in the tables and history charts.
             </p>
         </div>
     </div>

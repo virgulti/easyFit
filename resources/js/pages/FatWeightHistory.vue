@@ -13,7 +13,7 @@ defineOptions({
                 href: dashboard(),
             },
             {
-                title: 'Massa grassa — storico completo',
+                title: 'Fat weight — full history',
                 href: fatWeightHistory(),
             },
         ],
@@ -26,16 +26,16 @@ defineProps<{
 </script>
 
 <template>
-    <Head title="Massa grassa — storico completo" />
+    <Head title="Fat weight — full history" />
 
     <div class="mx-auto flex w-full max-w-6xl flex-1 flex-col space-y-6 p-4">
         <Heading
-            title="Massa grassa — storico completo"
-            description="L'andamento della tua massa grassa (kg) su tutte le misurazioni registrate"
+            title="Fat weight — full history"
+            description="How your fat weight (kg) has evolved across all logged measurements"
         />
 
         <ProgressChart
-            title="Massa grassa (kg) — storico completo"
+            title="Fat weight (kg) — full history"
             :series="fat_weight_all"
             light-color="#ea580c"
             dark-color="#ea580c"

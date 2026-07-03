@@ -84,7 +84,7 @@ function submit(): void {
 <template>
     <form class="space-y-6" @submit.prevent="submit">
         <div class="grid gap-2">
-            <Label class="text-base" for="date">Data</Label>
+            <Label class="text-base" for="date">Date</Label>
             <Input
                 id="date"
                 v-model="form.date"
@@ -96,12 +96,12 @@ function submit(): void {
         </div>
 
         <div class="grid gap-2">
-            <Label class="text-base" for="weight">Peso (kg)</Label>
+            <Label class="text-base" for="weight">Weight (kg)</Label>
             <DecimalDigitsInput
                 id="weight"
                 v-model="form.weight"
                 class="h-12 text-lg"
-                placeholder="es. 80,5"
+                placeholder="e.g. 80.5"
                 required
                 :aria-invalid="form.errors.weight ? true : undefined"
                 @complete="fatInput?.focus()"
@@ -110,13 +110,13 @@ function submit(): void {
         </div>
 
         <div class="grid gap-2">
-            <Label class="text-base" for="fat_perc">Massa grassa (%)</Label>
+            <Label class="text-base" for="fat_perc">Body fat (%)</Label>
             <DecimalDigitsInput
                 id="fat_perc"
                 ref="fatInput"
                 v-model="form.fat_perc"
                 class="h-12 text-lg"
-                placeholder="es. 22,5"
+                placeholder="e.g. 22.5"
                 required
                 :aria-invalid="form.errors.fat_perc ? true : undefined"
                 @complete="muscleInput?.focus()"
@@ -126,14 +126,14 @@ function submit(): void {
 
         <div class="grid gap-2">
             <Label class="text-base" for="muscle_perc">
-                Massa muscolare (%)
+                Muscle mass (%)
             </Label>
             <DecimalDigitsInput
                 id="muscle_perc"
                 ref="muscleInput"
                 v-model="form.muscle_perc"
                 class="h-12 text-lg"
-                placeholder="es. 41,0"
+                placeholder="e.g. 41.0"
                 required
                 :aria-invalid="form.errors.muscle_perc ? true : undefined"
                 @complete="bmiInput?.focus()"
@@ -148,7 +148,7 @@ function submit(): void {
                 ref="bmiInput"
                 v-model="form.bmi_value"
                 class="h-12 text-lg"
-                placeholder="es. 24,3"
+                placeholder="e.g. 24.3"
                 required
                 :aria-invalid="form.errors.bmi_value ? true : undefined"
                 @complete="focusBedtime()"
@@ -158,7 +158,7 @@ function submit(): void {
 
         <div class="grid gap-2">
                 <Label class="text-base" for="bedtime">
-                    A letto alle (opzionale)
+                    Bedtime (optional)
                 </Label>
                 <Input
                     id="bedtime"
@@ -172,7 +172,7 @@ function submit(): void {
 
         <div class="grid gap-2">
                 <Label class="text-base" for="sleep_duration">
-                    Durata sonno HH:mm (opzionale)
+                    Sleep duration HH:mm (optional)
                 </Label>
                 <Input
                     id="sleep_duration"
@@ -190,7 +190,7 @@ function submit(): void {
             :disabled="form.processing"
             data-test="save-measurement-button"
         >
-            {{ form.processing ? 'Salvataggio...' : submitLabel }}
+            {{ form.processing ? 'Saving...' : submitLabel }}
         </Button>
     </form>
 </template>

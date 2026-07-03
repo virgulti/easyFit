@@ -6,7 +6,7 @@ import MealLogController from '@/actions/App/Http/Controllers/MealLogController'
 import Heading from '@/components/Heading.vue';
 import { Button } from '@/components/ui/button';
 import { formatCost, mealTypeLabels } from '@/lib/meals';
-import { formatDecimal, formatItalianDate } from '@/lib/measurements';
+import { formatDecimal, formatDate } from '@/lib/measurements';
 import { dashboard } from '@/routes';
 import type { MealLog, MealThresholds, MealTotals } from '@/types';
 
@@ -33,7 +33,7 @@ defineOptions({
     layout: {
         breadcrumbs: [
             { title: 'Dashboard', href: dashboard() },
-            { title: 'Pasti del giorno', href: MealLogController.index() },
+            { title: 'Meals', href: MealLogController.index() },
         ],
     },
 });
@@ -56,20 +56,20 @@ const isToday = computed(() => {
 </script>
 
 <template>
-    <Head title="Pasti del giorno" />
+    <Head title="Meals" />
 
     <div class="mx-auto w-full max-w-2xl flex-1 space-y-6 p-4">
         <div class="flex flex-wrap items-start justify-between gap-4">
             <Heading
-                title="Pasti del giorno"
-                :description="formatItalianDate(date)"
+                title="Meals"
+                :description="formatDate(date)"
             />
 
             <Button as-child>
                 <Link
                     :href="MealLogController.create({ query: { date } })"
                 >
-                    Registra pasto
+                    Log meal
                 </Link>
             </Button>
         </div>
@@ -80,19 +80,19 @@ const isToday = computed(() => {
                     :href="MealLogController.index({ query: { date: previousDate } })"
                 >
                     <ChevronLeft class="h-4 w-4" />
-                    Giorno prima
+                    Previous day
                 </Link>
             </Button>
 
             <Button v-if="!isToday" variant="ghost" size="sm" as-child>
-                <Link :href="MealLogController.index()">Oggi</Link>
+                <Link :href="MealLogController.index()">Today</Link>
             </Button>
 
             <Button variant="outline" size="sm" as-child>
                 <Link
                     :href="MealLogController.index({ query: { date: nextDate } })"
                 >
-                    Giorno dopo
+                    Next day
                     <ChevronRight class="h-4 w-4" />
                 </Link>
             </Button>
@@ -102,7 +102,7 @@ const isToday = computed(() => {
             class="grid grid-cols-2 gap-4 rounded-xl border border-sidebar-border/70 p-4 sm:grid-cols-3 dark:border-sidebar-border"
         >
             <div>
-                <p class="text-sm text-muted-foreground">Calorie totali</p>
+                <p class="text-sm text-muted-foreground">Total calories</p>
                 <p class="text-2xl font-semibold">
                     {{ totals.calories }} kcal
                 </p>
@@ -117,11 +117,11 @@ const isToday = computed(() => {
                 >
                     <CircleCheck v-if="caloriesGoalMet" class="h-4 w-4" />
                     <CircleX v-else class="h-4 w-4" />
-                    obiettivo max {{ thresholds.max_calories_per_day }} kcal
+                    goal max {{ thresholds.max_calories_per_day }} kcal
                 </p>
             </div>
             <div>
-                <p class="text-sm text-muted-foreground">Proteine totali</p>
+                <p class="text-sm text-muted-foreground">Total protein</p>
                 <p class="text-2xl font-semibold">
                     {{ formatDecimal(totals.protein_grams) }}g
                 </p>
@@ -136,11 +136,11 @@ const isToday = computed(() => {
                 >
                     <CircleCheck v-if="proteinGoalMet" class="h-4 w-4" />
                     <CircleX v-else class="h-4 w-4" />
-                    obiettivo min {{ thresholds.min_protein_grams }}g
+                    goal min {{ thresholds.min_protein_grams }}g
                 </p>
             </div>
             <div v-if="totals.cost !== null">
-                <p class="text-sm text-muted-foreground">Costo totale</p>
+                <p class="text-sm text-muted-foreground">Total cost</p>
                 <p class="text-2xl font-semibold">
                     {{ formatCost(totals.cost) }}
                 </p>
@@ -152,7 +152,7 @@ const isToday = computed(() => {
             class="rounded-xl border border-sidebar-border/70 p-8 text-center dark:border-sidebar-border"
         >
             <p class="text-muted-foreground">
-                Nessun pasto registrato per questo giorno.
+                No meals logged for this day.
             </p>
         </div>
 
@@ -179,7 +179,7 @@ const isToday = computed(() => {
                         </p>
                         <p class="text-sm text-muted-foreground">
                             {{ formatDecimal(mealLog.protein_grams) }}g
-                            proteine
+                            protein
                         </p>
                         <p
                             v-if="mealLog.cost !== null"

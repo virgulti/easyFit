@@ -16,7 +16,7 @@ const emit = defineEmits<{
 const input = ref<HTMLInputElement | null>(null);
 
 /**
- * Display text initialized from the saved float (e.g. 80.5 -> "80,5") so that
+ * Display text initialized from the saved float (e.g. 80.5 -> "80.5") so that
  * editing an existing value never conflicts with the digit auto-formatting.
  */
 const display = ref(displayFromFloat(props.modelValue));
@@ -26,19 +26,19 @@ function displayFromFloat(value: number | null): string {
         return '';
     }
 
-    return String(value).replace('.', ',');
+    return String(value);
 }
 
 /**
  * Auto-formatting rule: the user types plain digits and the 3rd digit becomes
- * the decimal ("374" -> "37,4"). Input is capped at 3 digits.
+ * the decimal ("374" -> "37.4"). Input is capped at 3 digits.
  */
 function displayFromDigits(digits: string): string {
     if (digits.length < 3) {
         return digits;
     }
 
-    return `${digits.slice(0, 2)},${digits.slice(2)}`;
+    return `${digits.slice(0, 2)}.${digits.slice(2)}`;
 }
 
 function parsedValue(): number | null {
@@ -46,7 +46,7 @@ function parsedValue(): number | null {
         return null;
     }
 
-    const value = Number.parseFloat(display.value.replace(',', '.'));
+    const value = Number.parseFloat(display.value);
 
     return Number.isNaN(value) ? null : value;
 }

@@ -13,7 +13,7 @@ defineOptions({
     layout: {
         breadcrumbs: [
             {
-                title: 'Obiettivi',
+                title: 'Goals',
                 href: edit(),
             },
         ],
@@ -26,15 +26,15 @@ const props = defineProps<{
 </script>
 
 <template>
-    <Head title="Obiettivi" />
+    <Head title="Goals" />
 
-    <h1 class="sr-only">Obiettivi</h1>
+    <h1 class="sr-only">Goals</h1>
 
     <div class="flex flex-col space-y-6">
         <Heading
             variant="small"
-            title="Obiettivi"
-            description="Imposta le soglie che vuoi monitorare. Lascia vuoto un campo per non tracciare quella soglia."
+            title="Goals"
+            description="Set the thresholds you want to track. Leave a field blank to not track that goal."
         />
 
         <Form
@@ -44,7 +44,7 @@ const props = defineProps<{
         >
             <div class="grid gap-2">
                 <Label for="max_fat_percentage">
-                    Massa grassa massima (%)
+                    Max body fat (%)
                 </Label>
                 <Input
                     id="max_fat_percentage"
@@ -55,14 +55,14 @@ const props = defineProps<{
                     class="mt-1 block w-full"
                     name="max_fat_percentage"
                     :default-value="props.goal?.max_fat_percentage ?? undefined"
-                    placeholder="es. 19,0"
+                    placeholder="e.g. 19.0"
                 />
                 <InputError class="mt-2" :message="errors.max_fat_percentage" />
             </div>
 
             <div class="grid gap-2">
                 <Label for="min_protein_grams">
-                    Proteine minime al giorno (g)
+                    Min protein per day (g)
                 </Label>
                 <Input
                     id="min_protein_grams"
@@ -72,14 +72,14 @@ const props = defineProps<{
                     class="mt-1 block w-full"
                     name="min_protein_grams"
                     :default-value="props.goal?.min_protein_grams ?? undefined"
-                    placeholder="es. 160"
+                    placeholder="e.g. 160"
                 />
                 <InputError class="mt-2" :message="errors.min_protein_grams" />
             </div>
 
             <div class="grid gap-2">
                 <Label for="max_calories_per_day">
-                    Calorie massime al giorno (kcal)
+                    Max calories per day (kcal)
                 </Label>
                 <Input
                     id="max_calories_per_day"
@@ -89,7 +89,7 @@ const props = defineProps<{
                     class="mt-1 block w-full"
                     name="max_calories_per_day"
                     :default-value="props.goal?.max_calories_per_day ?? undefined"
-                    placeholder="es. 1500"
+                    placeholder="e.g. 1500"
                 />
                 <InputError
                     class="mt-2"
@@ -99,7 +99,7 @@ const props = defineProps<{
 
             <div class="grid gap-2">
                 <Label for="max_calories_per_week">
-                    Calorie massime a settimana (kcal)
+                    Max calories per week (kcal)
                 </Label>
                 <Input
                     id="max_calories_per_week"
@@ -109,7 +109,7 @@ const props = defineProps<{
                     class="mt-1 block w-full"
                     name="max_calories_per_week"
                     :default-value="props.goal?.max_calories_per_week ?? undefined"
-                    placeholder="es. 10500"
+                    placeholder="e.g. 10500"
                 />
                 <InputError
                     class="mt-2"
@@ -119,7 +119,7 @@ const props = defineProps<{
 
             <div class="flex items-center gap-4">
                 <Button :disabled="processing" data-test="update-goal-button">
-                    Salva
+                    Save
                 </Button>
             </div>
         </Form>

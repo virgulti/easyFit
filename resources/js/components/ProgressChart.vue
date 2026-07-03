@@ -11,7 +11,7 @@ import {
 } from 'chart.js';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { Line } from 'vue-chartjs';
-import { formatDecimal, formatItalianDate } from '@/lib/measurements';
+import { formatDecimal, formatDate } from '@/lib/measurements';
 import type { ChartSeries } from '@/types';
 
 // chart.js v4 is tree-shakeable: without explicit registration the canvas
@@ -72,10 +72,10 @@ function withAlpha(hex: string, alpha: number): string {
 }
 
 /**
- * Short Italian tick label for an ISO date ("2026-07-02" -> "2 lug").
+ * Short tick label for an ISO date ("2026-07-02" -> "2 Jul").
  */
 function shortLabel(isoDate: string): string {
-    return new Intl.DateTimeFormat('it-IT', {
+    return new Intl.DateTimeFormat('en-GB', {
         day: 'numeric',
         month: 'short',
         timeZone: 'UTC',
@@ -116,7 +116,7 @@ const chartOptions = computed<ChartOptions<'line'>>(() => {
                 displayColors: false,
                 callbacks: {
                     title: (items: TooltipItem<'line'>[]) =>
-                        formatItalianDate(
+                        formatDate(
                             props.series.labels[items[0].dataIndex],
                         ),
                     label: (item: TooltipItem<'line'>) =>
@@ -159,8 +159,7 @@ const chartOptions = computed<ChartOptions<'line'>>(() => {
             :class="heightClass"
             class="flex items-center justify-center px-4 text-center text-sm text-muted-foreground"
         >
-            Nessun dato da mostrare: registra una misurazione per vedere il
-            grafico.
+            No data to show yet: log a measurement to see the chart.
         </div>
         <div v-else :class="heightClass" class="mt-2">
             <Line :data="chartData" :options="chartOptions" />

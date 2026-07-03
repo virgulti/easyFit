@@ -13,7 +13,7 @@ defineOptions({
                 href: dashboard(),
             },
             {
-                title: 'Peso — storico completo',
+                title: 'Weight — full history',
                 href: weightHistory(),
             },
         ],
@@ -26,16 +26,16 @@ defineProps<{
 </script>
 
 <template>
-    <Head title="Peso — storico completo" />
+    <Head title="Weight — full history" />
 
     <div class="mx-auto flex w-full max-w-6xl flex-1 flex-col space-y-6 p-4">
         <Heading
-            title="Peso — storico completo"
-            description="L'andamento del tuo peso (kg) su tutte le misurazioni registrate"
+            title="Weight — full history"
+            description="How your weight (kg) has evolved across all logged measurements"
         />
 
         <ProgressChart
-            title="Peso (kg) — storico completo"
+            title="Weight (kg) — full history"
             :series="weight_all"
             light-color="#a21caf"
             dark-color="#c026d3"

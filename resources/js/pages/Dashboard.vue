@@ -50,7 +50,7 @@ const seriesColors = {
         <div class="flex flex-wrap items-start justify-between gap-4">
             <Heading
                 title="Dashboard"
-                description="I tuoi progressi giorno per giorno"
+                description="Your progress, day by day"
             />
 
             <div class="flex flex-wrap gap-2">
@@ -61,7 +61,7 @@ const seriesColors = {
                     data-test="new-measurement-button"
                 >
                     <Link :href="MeasurementController.create()">
-                        Nuova misura
+                        New measurement
                     </Link>
                 </Button>
             </div>
@@ -69,21 +69,21 @@ const seriesColors = {
 
         <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
             <ProgressChart
-                title="Progress — ultimi 5 giorni"
+                title="Progress — last 5 days"
                 :series="progress_last_5_days"
                 :light-color="seriesColors.progress.light"
                 :dark-color="seriesColors.progress.dark"
             />
 
             <ProgressChart
-                title="Progress — ultime 5 settimane (media settimanale)"
+                title="Progress — last 5 weeks (weekly average)"
                 :series="progress_last_5_weeks"
                 :light-color="seriesColors.progress.light"
                 :dark-color="seriesColors.progress.dark"
             />
 
             <ProgressChart
-                title="Progress — ultimi 6 mesi (media settimanale)"
+                title="Progress — last 6 months (weekly average)"
                 :series="progress_last_6_months"
                 :light-color="seriesColors.progress.light"
                 :dark-color="seriesColors.progress.dark"
@@ -95,7 +95,7 @@ const seriesColors = {
                 </template>
 
                 <ProgressChart
-                    title="Progress — storico completo"
+                    title="Progress — full history"
                     :series="progress_all!"
                     :light-color="seriesColors.progress.light"
                     :dark-color="seriesColors.progress.dark"
@@ -108,7 +108,7 @@ const seriesColors = {
                 </template>
 
                 <ProgressChart
-                    title="Peso (kg) — storico completo"
+                    title="Weight (kg) — full history"
                     :series="weight_all!"
                     :light-color="seriesColors.weight.light"
                     :dark-color="seriesColors.weight.dark"
@@ -121,7 +121,7 @@ const seriesColors = {
                 </template>
 
                 <ProgressChart
-                    title="Massa grassa (kg) — storico completo"
+                    title="Fat weight (kg) — full history"
                     :series="fat_weight_all!"
                     :light-color="seriesColors.fatWeight.light"
                     :dark-color="seriesColors.fatWeight.dark"
@@ -134,7 +134,7 @@ const seriesColors = {
                 </template>
 
                 <ProgressChart
-                    title="Massa muscolare (kg) — storico completo"
+                    title="Muscle weight (kg) — full history"
                     :series="muscle_weight_all!"
                     :light-color="seriesColors.muscleWeight.light"
                     :dark-color="seriesColors.muscleWeight.dark"
@@ -147,7 +147,7 @@ const seriesColors = {
                 </template>
 
                 <ProgressChart
-                    title="Progress BMI — storico completo"
+                    title="BMI progress — full history"
                     :series="bmi_progress_all!"
                     :light-color="seriesColors.bmiProgress.light"
                     :dark-color="seriesColors.bmiProgress.dark"

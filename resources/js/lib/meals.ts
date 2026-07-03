@@ -1,13 +1,13 @@
 import type { Meal, MealType } from '@/types';
 
 export const mealTypeLabels: Record<MealType, string> = {
-    colazione: 'Colazione',
-    pranzo: 'Pranzo',
-    cena: 'Cena',
-    spuntino: 'Spuntino',
+    breakfast: 'Breakfast',
+    lunch: 'Lunch',
+    dinner: 'Dinner',
+    snack: 'Snack',
 };
 
-export const mealTypes: MealType[] = ['colazione', 'pranzo', 'cena', 'spuntino'];
+export const mealTypes: MealType[] = ['breakfast', 'lunch', 'dinner', 'snack'];
 
 /**
  * Scale a catalog meal's calories/protein to a target weight, mirroring the
@@ -27,8 +27,8 @@ export function scaleMeal(
 }
 
 /**
- * Format a cost value in euros with an Italian comma separator ("8.5" -> "8,50 €").
+ * Format a cost value in euros ("8.5" -> "€8.50").
  */
 export function formatCost(value: string | number): string {
-    return `${Number(value).toFixed(2).replace('.', ',')} €`;
+    return `€${Number(value).toFixed(2)}`;
 }

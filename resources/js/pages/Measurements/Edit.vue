@@ -14,11 +14,11 @@ defineOptions({
                 href: dashboard(),
             },
             {
-                title: 'Storico misurazioni',
+                title: 'Measurement history',
                 href: MeasurementController.index(),
             },
             {
-                title: 'Modifica misurazione',
+                title: 'Edit measurement',
                 href: '#',
             },
         ],
@@ -31,17 +31,17 @@ const props = defineProps<{
 </script>
 
 <template>
-    <Head title="Modifica misurazione" />
+    <Head title="Edit measurement" />
 
     <div class="mx-auto w-full max-w-lg flex-1 p-4">
         <Heading
-            title="Modifica misurazione"
-            :description="`Aggiorna i valori registrati: digita solo le cifre, la terza diventa il decimale.`"
+            title="Edit measurement"
+            :description="`Update the logged values: type just the digits, the third one becomes the decimal.`"
         />
 
         <MeasurementForm
             :measurement="props.measurement"
-            submit-label="Salva modifiche"
+            submit-label="Save changes"
         />
     </div>
 </template>

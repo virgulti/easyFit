@@ -13,7 +13,7 @@ defineOptions({
                 href: dashboard(),
             },
             {
-                title: 'Progress — storico completo',
+                title: 'Progress — full history',
                 href: progressHistory(),
             },
         ],
@@ -26,16 +26,16 @@ defineProps<{
 </script>
 
 <template>
-    <Head title="Progress — storico completo" />
+    <Head title="Progress — full history" />
 
     <div class="mx-auto flex w-full max-w-6xl flex-1 flex-col space-y-6 p-4">
         <Heading
-            title="Progress — storico completo"
-            description="L'andamento del tuo progress su tutte le misurazioni registrate"
+            title="Progress — full history"
+            description="How your progress has evolved across all logged measurements"
         />
 
         <ProgressChart
-            title="Progress — storico completo"
+            title="Progress — full history"
             :series="progress_all"
             light-color="#2563eb"
             dark-color="#3b82f6"
