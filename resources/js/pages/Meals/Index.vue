@@ -1,61 +1,54 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import MealLogController from '@/actions/App/Http/Controllers/MealLogController';
+import MealController from '@/actions/App/Http/Controllers/MealController';
 import Heading from '@/components/Heading.vue';
 import { Button } from '@/components/ui/button';
 import { formatCost, mealTypeLabels } from '@/lib/meals';
-import { formatDecimal, formatDate } from '@/lib/measurements';
+import { formatDecimal } from '@/lib/measurements';
 import { dashboard } from '@/routes';
-import type { MealLog } from '@/types';
+import type { Meal } from '@/types';
 
 defineProps<{
-    mealLogs: MealLog[];
+    meals: Meal[];
 }>();
 
 defineOptions({
     layout: {
         breadcrumbs: [
             { title: 'Dashboard', href: dashboard() },
-            { title: 'Meals history', href: MealLogController.manage() },
+            { title: 'Meal catalog', href: MealController.index() },
         ],
     },
 });
 </script>
 
 <template>
-    <Head title="Meals history" />
+    <Head title="Meal catalog" />
 
     <div class="mx-auto w-full max-w-5xl flex-1 space-y-6 p-4">
         <div class="flex flex-wrap items-start justify-between gap-4">
             <Heading
-                title="Meals history"
-                description="All logged meals, newest first"
+                title="Meal catalog"
+                description="Meals you can quickly pick when logging"
             />
 
-            <div class="flex flex-wrap gap-2">
-                <Button variant="outline" as-child>
-                    <Link :href="MealLogController.index()">
-                        Today's meals
-                    </Link>
-                </Button>
-                <Button as-child>
-                    <Link :href="MealLogController.create()">
-                        Log meal
-                    </Link>
-                </Button>
-            </div>
+            <Button as-child>
+                <Link :href="MealController.create()">
+                    Add meal
+                </Link>
+            </Button>
         </div>
 
         <div
-            v-if="mealLogs.length === 0"
+            v-if="meals.length === 0"
             class="rounded-xl border border-sidebar-border/70 p-8 text-center dark:border-sidebar-border"
         >
             <p class="text-muted-foreground">
-                No meals logged yet.
+                No meals in the catalog yet.
             </p>
             <Button class="mt-4" as-child>
-                <Link :href="MealLogController.create()">
-                    Log your first meal
+                <Link :href="MealController.create()">
+                    Add your first meal
                 </Link>
             </Button>
         </div>
@@ -70,10 +63,11 @@ defineOptions({
                         <tr
                             class="border-b border-sidebar-border/70 text-left text-muted-foreground dark:border-sidebar-border"
                         >
-                            <th class="px-4 py-3 font-medium">Date</th>
-                            <th class="px-4 py-3 font-medium">Meal</th>
+                            <th class="px-4 py-3 font-medium">Description</th>
                             <th class="px-4 py-3 font-medium">Type</th>
-                            <th class="px-4 py-3 font-medium">Weight (g)</th>
+                            <th class="px-4 py-3 font-medium">
+                                Ref. weight (g)
+                            </th>
                             <th class="px-4 py-3 font-medium">Calories</th>
                             <th class="px-4 py-3 font-medium">Protein (g)</th>
                             <th class="px-4 py-3 font-medium">Cost</th>
@@ -82,30 +76,33 @@ defineOptions({
                     </thead>
                     <tbody>
                         <tr
-                            v-for="mealLog in mealLogs"
-                            :key="mealLog.id"
+                            v-for="meal in meals"
+                            :key="meal.id"
                             class="border-b border-sidebar-border/70 last:border-b-0 dark:border-sidebar-border"
                         >
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                {{ formatDate(mealLog.date) }}
-                            </td>
                             <td class="px-4 py-3">
-                                {{ mealLog.description }}
+                                {{ meal.description }}
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap">
-                                {{ mealTypeLabels[mealLog.meal_type] }}
-                            </td>
-                            <td class="px-4 py-3">{{ mealLog.weight_grams }}</td>
-                            <td class="px-4 py-3">{{ mealLog.calories }}</td>
-                            <td class="px-4 py-3">
-                                {{ formatDecimal(mealLog.protein_grams) }}
+                                {{ mealTypeLabels[meal.meal_type] }}
                             </td>
                             <td class="px-4 py-3">
-                                {{ mealLog.cost !== null ? formatCost(mealLog.cost) : '—' }}
+                                {{ meal.reference_weight_grams }}
+                            </td>
+                            <td class="px-4 py-3">{{ meal.calories }}</td>
+                            <td class="px-4 py-3">
+                                {{ formatDecimal(meal.protein_grams) }}
+                            </td>
+                            <td class="px-4 py-3">
+                                {{
+                                    meal.reference_cost !== null
+                                        ? formatCost(meal.reference_cost)
+                                        : '—'
+                                }}
                             </td>
                             <td class="px-4 py-3 text-right">
                                 <Button variant="outline" size="sm" as-child>
-                                    <Link :href="MealLogController.edit(mealLog.id)">
+                                    <Link :href="MealController.edit(meal.id)">
                                         Edit
                                     </Link>
                                 </Button>
@@ -118,42 +115,40 @@ defineOptions({
             <!-- Mobile cards -->
             <ul class="space-y-4 md:hidden">
                 <li
-                    v-for="mealLog in mealLogs"
-                    :key="mealLog.id"
+                    v-for="meal in meals"
+                    :key="meal.id"
                     class="space-y-3 rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border"
                 >
                     <div class="flex items-center justify-between gap-2">
-                        <p class="font-medium">{{ mealLog.description }}</p>
+                        <p class="font-medium">{{ meal.description }}</p>
                         <p class="text-sm text-muted-foreground">
-                            {{ formatDate(mealLog.date) }}
+                            {{ mealTypeLabels[meal.meal_type] }}
                         </p>
                     </div>
 
                     <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                         <div>
-                            <dt class="text-muted-foreground">Type</dt>
-                            <dd>{{ mealTypeLabels[mealLog.meal_type] }}</dd>
-                        </div>
-                        <div>
-                            <dt class="text-muted-foreground">Weight</dt>
-                            <dd>{{ mealLog.weight_grams }}g</dd>
+                            <dt class="text-muted-foreground">
+                                Ref. weight
+                            </dt>
+                            <dd>{{ meal.reference_weight_grams }}g</dd>
                         </div>
                         <div>
                             <dt class="text-muted-foreground">Calories</dt>
-                            <dd>{{ mealLog.calories }} kcal</dd>
+                            <dd>{{ meal.calories }} kcal</dd>
                         </div>
                         <div>
                             <dt class="text-muted-foreground">Protein</dt>
-                            <dd>{{ formatDecimal(mealLog.protein_grams) }}g</dd>
+                            <dd>{{ formatDecimal(meal.protein_grams) }}g</dd>
                         </div>
-                        <div v-if="mealLog.cost !== null">
+                        <div v-if="meal.reference_cost !== null">
                             <dt class="text-muted-foreground">Cost</dt>
-                            <dd>{{ formatCost(mealLog.cost) }}</dd>
+                            <dd>{{ formatCost(meal.reference_cost) }}</dd>
                         </div>
                     </dl>
 
                     <Button variant="outline" size="sm" class="w-full" as-child>
-                        <Link :href="MealLogController.edit(mealLog.id)">
+                        <Link :href="MealController.edit(meal.id)">
                             Edit
                         </Link>
                     </Button>

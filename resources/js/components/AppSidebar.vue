@@ -12,7 +12,9 @@ import {
     Gauge,
     UtensilsCrossed,
     ClipboardList,
+    BookOpen,
 } from '@lucide/vue';
+import MealController from '@/actions/App/Http/Controllers/MealController';
 import MealLogController from '@/actions/App/Http/Controllers/MealLogController';
 import MeasurementController from '@/actions/App/Http/Controllers/MeasurementController';
 import AppLogo from '@/components/AppLogo.vue';
@@ -61,9 +63,14 @@ const mainNavItems: NavItem[] = [
         icon: UtensilsCrossed,
     },
     {
-        title: 'Manage meals',
+        title: 'Meals history',
         href: MealLogController.manage(),
         icon: ClipboardList,
+    },
+    {
+        title: 'Meal catalog',
+        href: MealController.index(),
+        icon: BookOpen,
     },
 ];
 

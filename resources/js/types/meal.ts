@@ -7,6 +7,7 @@ export type Meal = {
     reference_weight_grams: number;
     calories: number;
     protein_grams: string;
+    reference_cost: string | null;
 };
 
 export type MealLog = {

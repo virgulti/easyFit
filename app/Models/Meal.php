@@ -20,6 +20,7 @@ use Illuminate\Support\Carbon;
  * @property int $reference_weight_grams
  * @property int $calories
  * @property string $protein_grams
+ * @property string|null $reference_cost
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
@@ -30,6 +31,7 @@ use Illuminate\Support\Carbon;
     'reference_weight_grams',
     'calories',
     'protein_grams',
+    'reference_cost',
 ])]
 class Meal extends Model
 {
@@ -48,6 +50,7 @@ class Meal extends Model
             'reference_weight_grams' => 'integer',
             'calories' => 'integer',
             'protein_grams' => 'decimal:1',
+            'reference_cost' => 'decimal:2',
         ];
     }
 
@@ -62,10 +65,11 @@ class Meal extends Model
     }
 
     /**
-     * Scale this meal's calories and protein proportionally to a target weight, for when a
-     * meal is registered with a different weight than its catalog reference_weight_grams.
+     * Scale this meal's calories, protein and cost proportionally to a target weight, for when
+     * a meal is registered with a different weight than its catalog reference_weight_grams. Cost
+     * is null when the catalog meal has no reference_cost.
      *
-     * @return array{calories: int, protein_grams: float}
+     * @return array{calories: int, protein_grams: float, cost: float|null}
      */
     public function scaledTo(int $targetWeightGrams): array
     {
@@ -74,6 +78,7 @@ class Meal extends Model
         return [
             'calories' => (int) round($this->calories * $ratio),
             'protein_grams' => round((float) $this->protein_grams * $ratio, 1),
+            'cost' => $this->reference_cost === null ? null : round((float) $this->reference_cost * $ratio, 2),
         ];
     }
 }

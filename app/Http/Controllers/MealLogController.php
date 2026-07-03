@@ -104,7 +104,7 @@ class MealLogController extends Controller
                 'weight_grams' => $data['weight_grams'],
                 'calories' => $scaled['calories'],
                 'protein_grams' => $scaled['protein_grams'],
-                'cost' => $data['cost'] ?? null,
+                'cost' => $meal->reference_cost === null ? ($data['cost'] ?? null) : $scaled['cost'],
                 'date' => $data['date'],
             ]);
         } else {
@@ -155,10 +155,18 @@ class MealLogController extends Controller
     {
         $data = $request->validated();
 
-        if ($mealLog->meal_id !== null && array_key_exists('weight_grams', $data)) {
-            $scaled = $mealLog->meal->scaledTo($data['weight_grams']);
-            $data['calories'] = $scaled['calories'];
-            $data['protein_grams'] = $scaled['protein_grams'];
+        if ($mealLog->meal_id !== null) {
+            $weightGrams = $data['weight_grams'] ?? $mealLog->weight_grams;
+            $scaled = $mealLog->meal->scaledTo($weightGrams);
+
+            if (array_key_exists('weight_grams', $data)) {
+                $data['calories'] = $scaled['calories'];
+                $data['protein_grams'] = $scaled['protein_grams'];
+            }
+
+            if ($mealLog->meal->reference_cost !== null) {
+                $data['cost'] = $scaled['cost'];
+            }
         }
 
         $mealLog->update($data);

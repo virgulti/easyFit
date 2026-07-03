@@ -124,6 +124,65 @@ test('registering a meal from the catalog with changed weight scales calories an
         ->and((float) $mealLog->protein_grams)->toBe(21.0); // 10.5 * 2
 });
 
+test('registering a meal from the catalog with a reference cost scales it proportionally, ignoring client input', function () {
+    $user = User::factory()->create();
+    $meal = Meal::factory()->for($user)->create([
+        'reference_weight_grams' => 100,
+        'reference_cost' => 4.0,
+    ]);
+
+    $response = $this->actingAs($user)->post(route('meal-logs.store'), [
+        'meal_id' => $meal->id,
+        'weight_grams' => 250, // 2.5x the reference weight
+        'cost' => 999, // should be ignored
+        'meal_type' => 'lunch',
+        'date' => '2026-05-01',
+    ]);
+
+    $response->assertRedirect();
+
+    expect((float) $user->mealLogs()->first()->cost)->toBe(10.0); // 4.0 * 2.5
+});
+
+test('registering a meal from the catalog without a reference cost trusts the client-supplied cost', function () {
+    $user = User::factory()->create();
+    $meal = Meal::factory()->for($user)->create(['reference_cost' => null]);
+
+    $this->actingAs($user)->post(route('meal-logs.store'), [
+        'meal_id' => $meal->id,
+        'weight_grams' => $meal->reference_weight_grams,
+        'cost' => 6.5,
+        'meal_type' => 'lunch',
+        'date' => '2026-05-01',
+    ])->assertRedirect();
+
+    expect((float) $user->mealLogs()->first()->cost)->toBe(6.5);
+});
+
+test('updating the weight of a catalog meal log with a reference cost rescales the stored cost', function () {
+    $user = User::factory()->create();
+    $meal = Meal::factory()->for($user)->create([
+        'reference_weight_grams' => 100,
+        'reference_cost' => 4.0,
+    ]);
+    $mealLog = $user->mealLogs()->create([
+        'meal_id' => $meal->id,
+        'description' => $meal->description,
+        'meal_type' => $meal->meal_type,
+        'weight_grams' => 100,
+        'calories' => $meal->calories,
+        'protein_grams' => $meal->protein_grams,
+        'cost' => 4.0,
+        'date' => '2026-05-01',
+    ]);
+
+    $this->actingAs($user)->put(route('meal-logs.update', $mealLog), [
+        'weight_grams' => 200,
+    ])->assertSessionHasNoErrors();
+
+    expect((float) $mealLog->fresh()->cost)->toBe(8.0); // 4.0 * 2
+});
+
 test('registering an unusual meal without save_to_catalog does not create a catalog entry', function () {
     $user = User::factory()->create();
 

@@ -22,4 +22,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 require __DIR__.'/settings.php';
 require __DIR__.'/measurements.php';
+require __DIR__.'/meals.php';
 require __DIR__.'/meal_logs.php';

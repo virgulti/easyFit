@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { mealTypeLabels, mealTypes, scaleMeal } from '@/lib/meals';
+import { formatCost, mealTypeLabels, mealTypes, scaleMeal } from '@/lib/meals';
 import { formatDecimal } from '@/lib/measurements';
 import { dashboard } from '@/routes';
 import type { Meal, MealLog, MealType } from '@/types';
@@ -58,6 +58,10 @@ const scaledPreview = computed(() => {
 
     return scaleMeal(props.meal, form.weight_grams);
 });
+
+const showCostInput = computed(
+    () => props.meal === null || props.meal.reference_cost === null,
+);
 
 function submit(): void {
     if (props.meal !== null) {
@@ -209,10 +213,13 @@ function destroy(): void {
                 >
                     {{ scaledPreview.calories }} kcal ·
                     {{ formatDecimal(scaledPreview.protein_grams) }}g protein
+                    <template v-if="scaledPreview.cost !== null">
+                        · {{ formatCost(scaledPreview.cost) }}
+                    </template>
                 </p>
             </div>
 
-            <div class="grid gap-2">
+            <div v-if="showCostInput" class="grid gap-2">
                 <Label class="text-base" for="cost">Cost (€, optional)</Label>
                 <Input
                     id="cost"

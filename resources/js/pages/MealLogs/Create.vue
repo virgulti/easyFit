@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { mealTypeLabels, mealTypes, scaleMeal } from '@/lib/meals';
+import { formatCost, mealTypeLabels, mealTypes, scaleMeal } from '@/lib/meals';
 import { formatDecimal } from '@/lib/measurements';
 import { dashboard } from '@/routes';
 import type { Meal, MealType } from '@/types';
@@ -63,6 +63,13 @@ const scaledPreview = computed(() => {
     return scaleMeal(selectedMeal.value, form.weight_grams);
 });
 
+const showCostInput = computed(
+    () =>
+        mode.value === 'unusual' ||
+        selectedMeal.value === null ||
+        selectedMeal.value.reference_cost === null,
+);
+
 const canSubmit = computed(() => {
     if (mode.value === 'catalog') {
         return selectedMeal.value !== null && !!form.weight_grams;
@@ -81,6 +88,7 @@ function selectMeal(meal: Meal): void {
     form.meal_id = meal.id;
     form.meal_type = meal.meal_type;
     form.weight_grams = meal.reference_weight_grams;
+    form.cost = undefined;
 }
 
 function switchMode(next: 'catalog' | 'unusual'): void {
@@ -177,21 +185,6 @@ function submit(): void {
                 <InputError :message="form.errors.meal_type" />
             </div>
 
-            <div class="grid gap-2">
-                <Label class="text-base" for="cost">Cost (€, optional)</Label>
-                <Input
-                    id="cost"
-                    v-model.number="form.cost"
-                    type="number"
-                    min="0"
-                    max="9999.99"
-                    step="0.01"
-                    class="h-12 text-lg"
-                    placeholder="e.g. 8.50"
-                />
-                <InputError :message="form.errors.cost" />
-            </div>
-
             <template v-if="mode === 'catalog'">
                 <div class="grid gap-2">
                     <Label class="text-base" for="meal-filter">
@@ -260,7 +253,25 @@ function submit(): void {
                         {{ scaledPreview.calories }} kcal ·
                         {{ formatDecimal(scaledPreview.protein_grams) }}g
                         protein
+                        <template v-if="scaledPreview.cost !== null">
+                            · {{ formatCost(scaledPreview.cost) }}
+                        </template>
                     </p>
+                </div>
+
+                <div v-if="showCostInput" class="grid gap-2">
+                    <Label class="text-base" for="cost">Cost (€, optional)</Label>
+                    <Input
+                        id="cost"
+                        v-model.number="form.cost"
+                        type="number"
+                        min="0"
+                        max="9999.99"
+                        step="0.01"
+                        class="h-12 text-lg"
+                        placeholder="e.g. 8.50"
+                    />
+                    <InputError :message="form.errors.cost" />
                 </div>
             </template>
 
@@ -327,6 +338,21 @@ function submit(): void {
                         required
                     />
                     <InputError :message="form.errors.protein_grams" />
+                </div>
+
+                <div class="grid gap-2">
+                    <Label class="text-base" for="cost">Cost (€, optional)</Label>
+                    <Input
+                        id="cost"
+                        v-model.number="form.cost"
+                        type="number"
+                        min="0"
+                        max="9999.99"
+                        step="0.01"
+                        class="h-12 text-lg"
+                        placeholder="e.g. 8.50"
+                    />
+                    <InputError :message="form.errors.cost" />
                 </div>
 
                 <Label class="flex items-center gap-3 text-base">
