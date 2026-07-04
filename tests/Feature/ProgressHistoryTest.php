@@ -35,3 +35,24 @@ test('progress history exposes the full progress series for the authenticated us
             ->has('progress_all.values', 3)
         );
 });
+
+test('progress history exposes every time-window series', function () {
+    $user = User::factory()->create();
+
+    Measurement::factory()->for($user)->count(3)->create();
+
+    $this->actingAs($user)
+        ->get(route('progress-history'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('ProgressHistory')
+            ->has('progress_last_5_days.labels')
+            ->has('progress_last_5_days.values')
+            ->has('progress_last_5_weeks.labels')
+            ->has('progress_last_5_weeks.values')
+            ->has('progress_last_6_months.labels')
+            ->has('progress_last_6_months.values')
+            ->has('progress_last_1_year.labels')
+            ->has('progress_last_1_year.values')
+        );
+});
