@@ -2,6 +2,7 @@
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import MeasurementController from '@/actions/App/Http/Controllers/MeasurementController';
+import DurationDigitsInput from '@/components/DurationDigitsInput.vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
 import TrendIndicator from '@/components/TrendIndicator.vue';
@@ -251,13 +252,12 @@ function submitOptional(): void {
                             for="sleep_duration"
                             class="flex items-center gap-1"
                         >
-                            Sleep duration (HH:mm)
+                            Sleep duration
                             <TrendIndicator :trend="trendOf('sleep_minutes')" />
                         </Label>
-                        <Input
+                        <DurationDigitsInput
                             id="sleep_duration"
                             v-model="form.sleep_duration"
-                            type="time"
                         />
                         <InputError :message="serverErrors.sleep_minutes" />
                     </div>

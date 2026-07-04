@@ -5,6 +5,7 @@ import { computed, ref } from 'vue';
 import MeasurementController from '@/actions/App/Http/Controllers/MeasurementController';
 import DateDigitsInput from '@/components/DateDigitsInput.vue';
 import DecimalDigitsInput from '@/components/DecimalDigitsInput.vue';
+import DurationDigitsInput from '@/components/DurationDigitsInput.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -172,12 +173,11 @@ function submit(): void {
 
         <div class="grid gap-2">
                 <Label class="text-base" for="sleep_duration">
-                    Sleep duration HH:mm (optional)
+                    Sleep duration (optional)
                 </Label>
-                <Input
+                <DurationDigitsInput
                     id="sleep_duration"
                     v-model="form.sleep_duration"
-                    type="time"
                     class="h-12 text-lg"
                 />
                 <InputError :message="serverErrors.sleep_minutes" />
