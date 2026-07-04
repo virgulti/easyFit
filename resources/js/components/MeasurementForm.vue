@@ -3,6 +3,7 @@ import { router, useForm } from '@inertiajs/vue3';
 import type { ComponentPublicInstance } from 'vue';
 import { computed, ref } from 'vue';
 import MeasurementController from '@/actions/App/Http/Controllers/MeasurementController';
+import DateDigitsInput from '@/components/DateDigitsInput.vue';
 import DecimalDigitsInput from '@/components/DecimalDigitsInput.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
@@ -85,10 +86,9 @@ function submit(): void {
     <form class="space-y-6" @submit.prevent="submit">
         <div class="grid gap-2">
             <Label class="text-base" for="date">Date</Label>
-            <Input
+            <DateDigitsInput
                 id="date"
                 v-model="form.date"
-                type="date"
                 class="h-12 text-lg"
                 required
             />
