@@ -13,7 +13,7 @@ import type { MealType } from '@/types';
 defineOptions({
     layout: {
         breadcrumbs: [
-            { title: 'Dashboard', href: dashboard() },
+            { title: 'easyfit', href: dashboard() },
             { title: 'Meal catalog', href: MealController.index() },
             { title: 'Add meal', href: MealController.create() },
         ],

@@ -24,7 +24,7 @@ import type { Meal, MealLog, MealType } from '@/types';
 defineOptions({
     layout: {
         breadcrumbs: [
-            { title: 'Dashboard', href: dashboard() },
+            { title: 'easyfit', href: dashboard() },
             { title: 'Meals', href: MealLogController.index() },
             { title: 'Edit meal', href: '#' },
         ],
