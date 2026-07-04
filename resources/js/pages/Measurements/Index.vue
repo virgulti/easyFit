@@ -91,26 +91,13 @@ function sleepInfo(measurement: Measurement): string {
                 title="Measurement history"
                 description="All measurements, newest first"
             />
-
-            <div class="flex flex-wrap gap-2">
-                <Button variant="outline" as-child>
-                    <Link :href="dashboard()">Back to dashboard</Link>
-                </Button>
-                <Button as-child>
-                    <Link :href="MeasurementController.create()">
-                        New measurement
-                    </Link>
-                </Button>
-            </div>
         </div>
 
         <div
             v-if="rows.length === 0"
             class="rounded-xl border border-sidebar-border/70 p-8 text-center dark:border-sidebar-border"
         >
-            <p class="text-muted-foreground">
-                No measurements logged yet.
-            </p>
+            <p class="text-muted-foreground">No measurements logged yet.</p>
             <Button class="mt-4" as-child>
                 <Link :href="MeasurementController.create()">
                     Log your first measurement
@@ -146,9 +133,7 @@ function sleepInfo(measurement: Measurement): string {
                         >
                             <td class="px-4 py-3 whitespace-nowrap">
                                 <span class="flex items-center gap-2">
-                                    {{
-                                        formatDate(row.measurement.date)
-                                    }}
+                                    {{ formatDate(row.measurement.date) }}
                                     <span
                                         v-if="row.improvement === true"
                                         class="text-green-600 dark:text-green-400"
@@ -254,9 +239,7 @@ function sleepInfo(measurement: Measurement): string {
                             </dd>
                         </div>
                         <div>
-                            <dt class="text-muted-foreground">
-                                Muscle mass
-                            </dt>
+                            <dt class="text-muted-foreground">Muscle mass</dt>
                             <dd>
                                 {{ formatDecimal(row.measurement.muscle_perc) }}
                                 %
