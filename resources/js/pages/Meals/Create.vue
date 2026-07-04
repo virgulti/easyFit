@@ -11,7 +11,7 @@ import { dashboard } from '@/routes';
 defineOptions({
     layout: {
         breadcrumbs: [
-            { title: 'easyfit', href: dashboard() },
+            { title: 'EasyFit', href: dashboard() },
             { title: 'Meal catalog', href: MealController.index() },
             { title: 'Add meal', href: MealController.create() },
         ],

@@ -32,7 +32,7 @@ const caloriesGoalMet = computed(() =>
 defineOptions({
     layout: {
         breadcrumbs: [
-            { title: 'easyfit', href: dashboard() },
+            { title: 'EasyFit', href: dashboard() },
             { title: 'Meals', href: MealLogController.index() },
         ],
     },

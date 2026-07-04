@@ -21,7 +21,7 @@ const props = defineProps<{
 defineOptions({
     layout: {
         breadcrumbs: [
-            { title: 'easyfit', href: dashboard() },
+            { title: 'EasyFit', href: dashboard() },
             { title: 'Log meal', href: MealLogController.create() },
         ],
     },

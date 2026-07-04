@@ -24,7 +24,7 @@ defineOptions({
     layout: {
         breadcrumbs: [
             {
-                title: 'easyfit',
+                title: 'EasyFit',
                 href: dashboard(),
             },
             {
