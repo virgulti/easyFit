@@ -4,6 +4,7 @@ import { computed } from 'vue';
 import MeasurementController from '@/actions/App/Http/Controllers/MeasurementController';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
+import TrendIndicator from '@/components/TrendIndicator.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,7 +17,7 @@ import {
     minutesToDuration,
 } from '@/lib/measurements';
 import { dashboard } from '@/routes';
-import type { BmiBand, Measurement } from '@/types';
+import type { BmiBand, Measurement, Trend } from '@/types';
 
 defineOptions({
     layout: {
@@ -41,28 +42,49 @@ const props = defineProps<{
     muscleWeight: number;
     improvement: boolean | null;
     bmiBand: BmiBand;
+    trends: Record<string, Trend> | null;
 }>();
 
+function trendOf(key: string): Trend {
+    return props.trends?.[key] ?? null;
+}
+
 const mainValues = computed(() => [
-    { label: 'Weight', value: `${formatDecimal(props.measurement.weight)} kg` },
     {
+        key: 'weight',
+        label: 'Weight',
+        value: `${formatDecimal(props.measurement.weight)} kg`,
+    },
+    {
+        key: 'fat_perc',
         label: 'Body fat',
         value: `${formatDecimal(props.measurement.fat_perc)} %`,
     },
     {
+        key: 'muscle_perc',
         label: 'Muscle mass',
         value: `${formatDecimal(props.measurement.muscle_perc)} %`,
     },
 ]);
 
 const derivedValues = computed(() => [
-    { label: 'Progress', value: formatDecimal(props.progress) },
-    { label: 'BMI progress', value: formatDecimal(props.bmiProgress) },
     {
+        key: 'progress',
+        label: 'Progress',
+        value: formatDecimal(props.progress),
+    },
+    {
+        key: 'bmi_progress',
+        label: 'BMI progress',
+        value: formatDecimal(props.bmiProgress),
+    },
+    {
+        key: 'fat_weight',
         label: 'Fat weight (kg)',
         value: `${formatDecimal(props.fatWeight, 2)} kg`,
     },
     {
+        key: 'muscle_weight',
         label: 'Muscle weight (kg)',
         value: `${formatDecimal(props.muscleWeight, 2)} kg`,
     },
@@ -147,7 +169,12 @@ function submitOptional(): void {
                 :key="item.label"
                 class="rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border"
             >
-                <p class="text-sm text-muted-foreground">{{ item.label }}</p>
+                <p
+                    class="flex items-center gap-1 text-sm text-muted-foreground"
+                >
+                    {{ item.label }}
+                    <TrendIndicator :trend="trendOf(item.key)" />
+                </p>
                 <p class="mt-1 text-2xl font-semibold tracking-tight">
                     {{ item.value }}
                 </p>
@@ -156,7 +183,12 @@ function submitOptional(): void {
             <div
                 class="rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border"
             >
-                <p class="text-sm text-muted-foreground">BMI</p>
+                <p
+                    class="flex items-center gap-1 text-sm text-muted-foreground"
+                >
+                    BMI
+                    <TrendIndicator :trend="trendOf('bmi_value')" />
+                </p>
                 <div class="mt-1 flex items-center gap-2">
                     <p class="text-2xl font-semibold tracking-tight">
                         {{ formatDecimal(measurement.bmi_value) }}
@@ -178,7 +210,12 @@ function submitOptional(): void {
                 :key="item.label"
                 class="rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border"
             >
-                <p class="text-sm text-muted-foreground">{{ item.label }}</p>
+                <p
+                    class="flex items-center gap-1 text-sm text-muted-foreground"
+                >
+                    {{ item.label }}
+                    <TrendIndicator :trend="trendOf(item.key)" />
+                </p>
                 <p class="mt-1 text-2xl font-semibold tracking-tight">
                     {{ item.value }}
                 </p>
@@ -197,7 +234,10 @@ function submitOptional(): void {
             <form class="mt-4 space-y-6" @submit.prevent="submitOptional">
                 <div class="grid gap-6 sm:grid-cols-2">
                     <div class="grid content-start gap-2">
-                        <Label for="bedtime">Bedtime</Label>
+                        <Label for="bedtime" class="flex items-center gap-1">
+                            Bedtime
+                            <TrendIndicator :trend="trendOf('bedtime')" />
+                        </Label>
                         <Input
                             id="bedtime"
                             v-model="form.bedtime"
@@ -207,7 +247,13 @@ function submitOptional(): void {
                     </div>
 
                     <div class="grid content-start gap-2">
-                        <Label for="sleep_duration">Sleep duration (HH:mm)</Label>
+                        <Label
+                            for="sleep_duration"
+                            class="flex items-center gap-1"
+                        >
+                            Sleep duration (HH:mm)
+                            <TrendIndicator :trend="trendOf('sleep_minutes')" />
+                        </Label>
                         <Input
                             id="sleep_duration"
                             v-model="form.sleep_duration"

@@ -62,6 +62,7 @@ class MeasurementController extends Controller
             'muscleWeight' => $measurement->muscleWeight,
             'improvement' => $measurement->improvement(),
             'bmiBand' => $measurement->bmiBand(),
+            'trends' => $measurement->trends(),
         ]);
     }
 

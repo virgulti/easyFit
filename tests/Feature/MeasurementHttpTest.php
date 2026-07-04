@@ -167,7 +167,7 @@ test('summary includes derived metrics', function () {
         ->and($page['props']['measurement']['id'])->toBe($measurement->id)
         ->and($page['props']['progress'])->toBe(77.5)
         ->and($page['props']['bmiProgress'])->toBe(31.5)
-        ->and($page['props'])->toHaveKeys(['fatWeight', 'muscleWeight', 'improvement', 'bmiBand']);
+        ->and($page['props'])->toHaveKeys(['fatWeight', 'muscleWeight', 'improvement', 'bmiBand', 'trends']);
 });
 
 test('index lists only the authenticated users measurements ordered by date desc', function () {

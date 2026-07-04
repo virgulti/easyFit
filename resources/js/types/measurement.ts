@@ -11,6 +11,11 @@ export type ChartSeries = {
     values: (number | null)[];
 };
 
+export type Trend = {
+    direction: 'up' | 'down' | 'stable';
+    color: 'green' | 'red' | 'gray';
+} | null;
+
 export type Measurement = {
     id: number;
     date: string;
