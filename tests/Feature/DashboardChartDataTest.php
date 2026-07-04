@@ -26,8 +26,12 @@ test('dashboard exposes the 8 plan chart series with the expected shape', functi
             ->has('progress_last_5_weeks.values')
             ->has('progress_last_6_months.labels')
             ->has('progress_last_6_months.values')
+            ->has('progress_last_1_year.labels')
+            ->has('progress_last_1_year.values')
+            ->where('fat_percentage_goal', null)
             // The *_all series are deferred (Inertia::defer): not present on the initial visit.
             ->missing('progress_all')
+            ->missing('fat_percentage_all')
             ->missing('weight_all')
             ->missing('fat_weight_all')
             ->missing('muscle_weight_all')
@@ -35,6 +39,8 @@ test('dashboard exposes the 8 plan chart series with the expected shape', functi
             ->loadDeferredProps(fn (Assert $reload) => $reload
                 ->has('progress_all.labels', 3)
                 ->has('progress_all.values', 3)
+                ->has('fat_percentage_all.labels', 3)
+                ->has('fat_percentage_all.values', 3)
                 ->has('weight_all.labels', 3)
                 ->has('weight_all.values', 3)
                 ->has('fat_weight_all.labels', 3)
@@ -44,6 +50,20 @@ test('dashboard exposes the 8 plan chart series with the expected shape', functi
                 ->has('bmi_progress_all.labels', 3)
                 ->has('bmi_progress_all.values', 3)
             )
+        );
+});
+
+test('dashboard exposes the users fat percentage goal when set', function () {
+    $user = User::factory()->create();
+    $user->goal()->create(['max_fat_percentage' => 19.5]);
+
+    Measurement::factory()->for($user)->create();
+
+    $this->actingAs($user)
+        ->get(route('dashboard'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->where('fat_percentage_goal', 19.5)
         );
 });
 

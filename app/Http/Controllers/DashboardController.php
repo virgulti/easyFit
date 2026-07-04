@@ -40,6 +40,13 @@ class DashboardController extends Controller
             $weeks,
             fn (array $week): bool => $week['week_start'] >= $sixMonthsAgo,
         ));
+        $oneYearAgo = Carbon::today()->subYear()->toDateString();
+        $weeksInLastYear = array_values(array_filter(
+            $weeks,
+            fn (array $week): bool => $week['week_start'] >= $oneYearAgo,
+        ));
+
+        $goal = $user->goal;
 
         return Inertia::render('Dashboard', [
             'progress_last_5_days' => $this->lastDaysSeries(
@@ -48,10 +55,16 @@ class DashboardController extends Controller
             ),
             'progress_last_5_weeks' => $this->weeklySeries(array_slice($weeks, -5), 'progress'),
             'progress_last_6_months' => $this->weeklySeries($weeksInLast6Months, 'progress'),
+            'progress_last_1_year' => $this->weeklySeries($weeksInLastYear, 'progress'),
             'progress_all' => Inertia::defer(
                 fn () => $this->measurementSeries($measurements, fn (Measurement $measurement): float => $measurement->progress),
                 'history',
             ),
+            'fat_percentage_all' => Inertia::defer(
+                fn () => $this->measurementSeries($measurements, fn (Measurement $measurement): float => (float) $measurement->fat_perc),
+                'history',
+            ),
+            'fat_percentage_goal' => $goal?->max_fat_percentage !== null ? (float) $goal->max_fat_percentage : null,
             'weight_all' => Inertia::defer(
                 fn () => $this->measurementSeries($measurements, fn (Measurement $measurement): float => (float) $measurement->weight),
                 'history',

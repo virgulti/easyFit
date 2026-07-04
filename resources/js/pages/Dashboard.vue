@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { Deferred, Head, Link } from '@inertiajs/vue3';
+import { CirclePlus } from '@lucide/vue';
+import MealLogController from '@/actions/App/Http/Controllers/MealLogController';
 import MeasurementController from '@/actions/App/Http/Controllers/MeasurementController';
 import ChartSkeleton from '@/components/ChartSkeleton.vue';
 import Heading from '@/components/Heading.vue';
@@ -23,7 +25,10 @@ defineProps<{
     progress_last_5_days: ChartSeries;
     progress_last_5_weeks: ChartSeries;
     progress_last_6_months: ChartSeries;
+    progress_last_1_year: ChartSeries;
     progress_all?: ChartSeries;
+    fat_percentage_all?: ChartSeries;
+    fat_percentage_goal?: number | null;
     weight_all?: ChartSeries;
     fat_weight_all?: ChartSeries;
     muscle_weight_all?: ChartSeries;
@@ -37,6 +42,7 @@ defineProps<{
 const seriesColors = {
     progress: { light: '#2563eb', dark: '#3b82f6' },
     weight: { light: '#a21caf', dark: '#c026d3' },
+    fatPercentage: { light: '#db2777', dark: '#db2777' },
     fatWeight: { light: '#ea580c', dark: '#ea580c' },
     muscleWeight: { light: '#16a34a', dark: '#16a34a' },
     bmiProgress: { light: '#0891b2', dark: '#0891b2' },
@@ -61,7 +67,20 @@ const seriesColors = {
                     data-test="new-measurement-button"
                 >
                     <Link :href="MeasurementController.create()">
-                        New measurement
+                        <CirclePlus />
+                        Measure
+                    </Link>
+                </Button>
+                <Button
+                    size="lg"
+                    variant="outline"
+                    class="text-base font-semibold"
+                    as-child
+                    data-test="new-meal-button"
+                >
+                    <Link :href="MealLogController.create()">
+                        <CirclePlus />
+                        Meal
                     </Link>
                 </Button>
             </div>
@@ -89,6 +108,13 @@ const seriesColors = {
                 :dark-color="seriesColors.progress.dark"
             />
 
+            <ProgressChart
+                title="Progress — last 1 year (weekly average)"
+                :series="progress_last_1_year"
+                :light-color="seriesColors.progress.light"
+                :dark-color="seriesColors.progress.dark"
+            />
+
             <Deferred data="progress_all">
                 <template #fallback>
                     <ChartSkeleton />
@@ -99,6 +125,20 @@ const seriesColors = {
                     :series="progress_all!"
                     :light-color="seriesColors.progress.light"
                     :dark-color="seriesColors.progress.dark"
+                />
+            </Deferred>
+
+            <Deferred data="fat_percentage_all">
+                <template #fallback>
+                    <ChartSkeleton />
+                </template>
+
+                <ProgressChart
+                    title="Fat % — full history"
+                    :series="fat_percentage_all!"
+                    :light-color="seriesColors.fatPercentage.light"
+                    :dark-color="seriesColors.fatPercentage.dark"
+                    :goal-value="fat_percentage_goal"
                 />
             </Deferred>
 

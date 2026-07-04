@@ -32,11 +32,13 @@ const props = withDefaults(
         lightColor?: string;
         darkColor?: string;
         heightClass?: string;
+        goalValue?: number | null;
     }>(),
     {
         lightColor: '#2563eb',
         darkColor: '#3b82f6',
         heightClass: 'h-56',
+        goalValue: null,
     },
 );
 
@@ -98,6 +100,21 @@ const chartData = computed(() => ({
             tension: 0.3,
             fill: true,
         },
+        ...(props.goalValue !== null
+            ? [
+                  {
+                      label: 'Goal',
+                      data: props.series.labels.map(() => props.goalValue),
+                      borderColor: isDark.value ? '#f59e0b' : '#b45309',
+                      borderWidth: 1.5,
+                      borderDash: [6, 6],
+                      pointRadius: 0,
+                      pointHitRadius: 0,
+                      fill: false,
+                      tension: 0,
+                  },
+              ]
+            : []),
     ],
 }));
 
@@ -119,10 +136,17 @@ const chartOptions = computed<ChartOptions<'line'>>(() => {
                         formatDate(
                             props.series.labels[items[0].dataIndex],
                         ),
-                    label: (item: TooltipItem<'line'>) =>
-                        item.parsed.y === null
-                            ? ''
-                            : formatDecimal(item.parsed.y),
+                    label: (item: TooltipItem<'line'>) => {
+                        if (item.parsed.y === null) {
+                            return '';
+                        }
+
+                        const value = formatDecimal(item.parsed.y);
+
+                        return chartData.value.datasets.length > 1
+                            ? `${item.dataset.label}: ${value}`
+                            : value;
+                    },
                 },
             },
         },
