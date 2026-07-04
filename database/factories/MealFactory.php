@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Enums\MealType;
 use App\Models\Meal;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,7 +23,6 @@ class MealFactory extends Factory
         return [
             'user_id' => User::factory(),
             'description' => rtrim(fake()->unique()->sentence(3), '.'),
-            'meal_type' => fake()->randomElement(MealType::cases()),
             'reference_weight_grams' => fake()->numberBetween(50, 500),
             'calories' => fake()->numberBetween(80, 800),
             'protein_grams' => fake()->randomFloat(1, 2, 50),

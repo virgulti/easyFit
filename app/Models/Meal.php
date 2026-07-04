@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\MealType;
 use Database\Factories\MealFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,7 +15,6 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property int $user_id
  * @property string $description
- * @property MealType $meal_type
  * @property int $reference_weight_grams
  * @property int $calories
  * @property string $protein_grams
@@ -27,7 +25,6 @@ use Illuminate\Support\Carbon;
 #[Fillable([
     'user_id',
     'description',
-    'meal_type',
     'reference_weight_grams',
     'calories',
     'protein_grams',
@@ -46,7 +43,6 @@ class Meal extends Model
     protected function casts(): array
     {
         return [
-            'meal_type' => MealType::class,
             'reference_weight_grams' => 'integer',
             'calories' => 'integer',
             'protein_grams' => 'decimal:1',

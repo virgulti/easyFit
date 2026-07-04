@@ -47,7 +47,6 @@ test('a catalog meal can be created', function () {
 
     $response = $this->actingAs($user)->post(route('meals.store'), [
         'description' => 'Chicken breast with rice and vegetables',
-        'meal_type' => 'lunch',
         'reference_weight_grams' => 350,
         'calories' => 500,
         'protein_grams' => 40.0,
@@ -69,7 +68,6 @@ test('creating a catalog meal requires a description unique per user', function 
 
     $this->actingAs($user)->post(route('meals.store'), [
         'description' => 'Greek yogurt with honey',
-        'meal_type' => 'breakfast',
         'reference_weight_grams' => 150,
         'calories' => 180,
         'protein_grams' => 15.0,
@@ -85,7 +83,6 @@ test('two different users can each have a catalog meal with the same description
 
     $this->actingAs($userB)->post(route('meals.store'), [
         'description' => 'Greek yogurt with honey',
-        'meal_type' => 'breakfast',
         'reference_weight_grams' => 150,
         'calories' => 180,
         'protein_grams' => 15.0,
@@ -99,7 +96,6 @@ test('a catalog meal can be created with a reference cost', function () {
 
     $response = $this->actingAs($user)->post(route('meals.store'), [
         'description' => 'Chicken breast with rice and vegetables',
-        'meal_type' => 'lunch',
         'reference_weight_grams' => 350,
         'calories' => 500,
         'protein_grams' => 40.0,
@@ -116,7 +112,6 @@ test('a catalog meal reference cost is optional and defaults to null', function 
 
     $this->actingAs($user)->post(route('meals.store'), [
         'description' => 'Chicken breast with rice and vegetables',
-        'meal_type' => 'lunch',
         'reference_weight_grams' => 350,
         'calories' => 500,
         'protein_grams' => 40.0,
@@ -164,7 +159,7 @@ test('a catalog meal can be deleted by its owner, and existing meal logs keep th
     $mealLog = $user->mealLogs()->create([
         'meal_id' => $meal->id,
         'description' => $meal->description,
-        'meal_type' => $meal->meal_type,
+        'meal_type' => 'lunch',
         'weight_grams' => $meal->reference_weight_grams,
         'calories' => $meal->calories,
         'protein_grams' => $meal->protein_grams,

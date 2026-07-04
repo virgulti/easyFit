@@ -168,7 +168,7 @@ test('updating the weight of a catalog meal log with a reference cost rescales t
     $mealLog = $user->mealLogs()->create([
         'meal_id' => $meal->id,
         'description' => $meal->description,
-        'meal_type' => $meal->meal_type,
+        'meal_type' => 'lunch',
         'weight_grams' => 100,
         'calories' => $meal->calories,
         'protein_grams' => $meal->protein_grams,

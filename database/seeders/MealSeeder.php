@@ -56,6 +56,10 @@ class MealSeeder extends Seeder
             ['description' => 'Wholemeal crackers', 'meal_type' => MealType::Snack, 'reference_weight_grams' => 30, 'calories' => 130, 'protein_grams' => 3.0],
         ];
 
+        // Kept only to pick a plausible meal_type below when generating meal logs from these
+        // catalog entries: meal_type belongs to the logging event, not the catalog meal itself.
+        $mealTypeByDescription = collect($meals)->pluck('meal_type', 'description');
+
         foreach ($meals as $mealData) {
             Meal::updateOrCreate(
                 [
@@ -63,7 +67,6 @@ class MealSeeder extends Seeder
                     'description' => $mealData['description'],
                 ],
                 [
-                    'meal_type' => $mealData['meal_type'],
                     'reference_weight_grams' => $mealData['reference_weight_grams'],
                     'calories' => $mealData['calories'],
                     'protein_grams' => $mealData['protein_grams'],
@@ -104,7 +107,7 @@ class MealSeeder extends Seeder
                             'user_id' => $user->id,
                             'meal_id' => $meal->id,
                             'description' => $meal->description,
-                            'meal_type' => $meal->meal_type,
+                            'meal_type' => $mealTypeByDescription[$meal->description],
                             'weight_grams' => $targetWeightGrams,
                             'calories' => $scaledValues['calories'],
                             'protein_grams' => $scaledValues['protein_grams'],
@@ -115,7 +118,7 @@ class MealSeeder extends Seeder
                             'user_id' => $user->id,
                             'meal_id' => $meal->id,
                             'description' => $meal->description,
-                            'meal_type' => $meal->meal_type,
+                            'meal_type' => $mealTypeByDescription[$meal->description],
                             'weight_grams' => $meal->reference_weight_grams,
                             'calories' => $meal->calories,
                             'protein_grams' => $meal->protein_grams,

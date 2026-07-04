@@ -3,7 +3,6 @@ export type MealType = 'breakfast' | 'lunch' | 'dinner' | 'snack';
 export type Meal = {
     id: number;
     description: string;
-    meal_type: MealType;
     reference_weight_grams: number;
     calories: number;
     protein_grams: string;

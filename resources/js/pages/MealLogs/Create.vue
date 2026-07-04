@@ -86,7 +86,6 @@ const canSubmit = computed(() => {
 function selectMeal(meal: Meal): void {
     selectedMeal.value = meal;
     form.meal_id = meal.id;
-    form.meal_type = meal.meal_type;
     form.weight_grams = meal.reference_weight_grams;
     form.cost = undefined;
 }
@@ -222,7 +221,6 @@ function submit(): void {
                     >
                         <p class="font-medium">{{ meal.description }}</p>
                         <p class="text-sm text-muted-foreground">
-                            {{ mealTypeLabels[meal.meal_type] }} ·
                             {{ meal.reference_weight_grams }}g ·
                             {{ meal.calories }} kcal ·
                             {{ formatDecimal(meal.protein_grams) }}g protein

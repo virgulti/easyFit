@@ -16,9 +16,8 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { mealTypeLabels, mealTypes } from '@/lib/meals';
 import { dashboard } from '@/routes';
-import type { Meal, MealType } from '@/types';
+import type { Meal } from '@/types';
 
 const props = defineProps<{
     meal: Meal;
@@ -36,7 +35,6 @@ defineOptions({
 
 const form = useForm({
     description: props.meal.description,
-    meal_type: props.meal.meal_type as MealType,
     reference_weight_grams: props.meal.reference_weight_grams,
     calories: props.meal.calories,
     protein_grams: Number.parseFloat(props.meal.protein_grams),
@@ -121,23 +119,6 @@ function destroy(): void {
                     required
                 />
                 <InputError :message="form.errors.description" />
-            </div>
-
-            <div class="grid gap-2">
-                <Label class="text-base">Meal type</Label>
-                <div class="grid grid-cols-4 gap-2">
-                    <Button
-                        v-for="type in mealTypes"
-                        :key="type"
-                        type="button"
-                        size="sm"
-                        :variant="form.meal_type === type ? 'default' : 'outline'"
-                        @click="form.meal_type = type"
-                    >
-                        {{ mealTypeLabels[type] }}
-                    </Button>
-                </div>
-                <InputError :message="form.errors.meal_type" />
             </div>
 
             <div class="grid gap-2">

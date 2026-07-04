@@ -21,7 +21,6 @@ class MealController extends Controller
     public function index(Request $request): Response
     {
         $meals = $request->user()->meals()
-            ->orderBy('meal_type')
             ->orderBy('description')
             ->get();
 

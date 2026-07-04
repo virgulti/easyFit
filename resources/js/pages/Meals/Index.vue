@@ -3,7 +3,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import MealController from '@/actions/App/Http/Controllers/MealController';
 import Heading from '@/components/Heading.vue';
 import { Button } from '@/components/ui/button';
-import { formatCost, mealTypeLabels } from '@/lib/meals';
+import { formatCost } from '@/lib/meals';
 import { formatDecimal } from '@/lib/measurements';
 import { dashboard } from '@/routes';
 import type { Meal } from '@/types';
@@ -64,7 +64,6 @@ defineOptions({
                             class="border-b border-sidebar-border/70 text-left text-muted-foreground dark:border-sidebar-border"
                         >
                             <th class="px-4 py-3 font-medium">Description</th>
-                            <th class="px-4 py-3 font-medium">Type</th>
                             <th class="px-4 py-3 font-medium">
                                 Ref. weight (g)
                             </th>
@@ -82,9 +81,6 @@ defineOptions({
                         >
                             <td class="px-4 py-3">
                                 {{ meal.description }}
-                            </td>
-                            <td class="px-4 py-3 whitespace-nowrap">
-                                {{ mealTypeLabels[meal.meal_type] }}
                             </td>
                             <td class="px-4 py-3">
                                 {{ meal.reference_weight_grams }}
@@ -119,12 +115,7 @@ defineOptions({
                     :key="meal.id"
                     class="space-y-3 rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border"
                 >
-                    <div class="flex items-center justify-between gap-2">
-                        <p class="font-medium">{{ meal.description }}</p>
-                        <p class="text-sm text-muted-foreground">
-                            {{ mealTypeLabels[meal.meal_type] }}
-                        </p>
-                    </div>
+                    <p class="font-medium">{{ meal.description }}</p>
 
                     <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                         <div>

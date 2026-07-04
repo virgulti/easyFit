@@ -6,9 +6,7 @@ import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { mealTypeLabels, mealTypes } from '@/lib/meals';
 import { dashboard } from '@/routes';
-import type { MealType } from '@/types';
 
 defineOptions({
     layout: {
@@ -22,7 +20,6 @@ defineOptions({
 
 const form = useForm({
     description: '',
-    meal_type: 'lunch' as MealType,
     reference_weight_grams: undefined as number | undefined,
     calories: undefined as number | undefined,
     protein_grams: undefined as number | undefined,
@@ -57,23 +54,6 @@ function submit(): void {
                     required
                 />
                 <InputError :message="form.errors.description" />
-            </div>
-
-            <div class="grid gap-2">
-                <Label class="text-base">Meal type</Label>
-                <div class="grid grid-cols-4 gap-2">
-                    <Button
-                        v-for="type in mealTypes"
-                        :key="type"
-                        type="button"
-                        size="sm"
-                        :variant="form.meal_type === type ? 'default' : 'outline'"
-                        @click="form.meal_type = type"
-                    >
-                        {{ mealTypeLabels[type] }}
-                    </Button>
-                </div>
-                <InputError :message="form.errors.meal_type" />
             </div>
 
             <div class="grid gap-2">
