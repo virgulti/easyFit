@@ -53,7 +53,9 @@ const seriesColors = {
     <Head title="Dashboard" />
 
     <div class="mx-auto w-full max-w-6xl flex-1 space-y-6 p-4">
-        <div class="flex flex-wrap items-start justify-between gap-4">
+        <div
+            class="flex flex-col-reverse items-start gap-4 sm:flex-row sm:flex-wrap sm:justify-between"
+        >
             <Heading
                 title="Dashboard"
                 description="Your progress, day by day"
