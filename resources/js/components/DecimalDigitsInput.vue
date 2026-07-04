@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue';
 import { ref, watch } from 'vue';
+import { getDecimalSeparator } from '@/composables/useNumberFormat';
 import { cn } from '@/lib/utils';
 
 const props = defineProps<{
@@ -21,24 +22,29 @@ const input = ref<HTMLInputElement | null>(null);
  */
 const display = ref(displayFromFloat(props.modelValue));
 
+function separatorChar(): '.' | ',' {
+    return getDecimalSeparator() === 'comma' ? ',' : '.';
+}
+
 function displayFromFloat(value: number | null): string {
     if (value === null || Number.isNaN(value)) {
         return '';
     }
 
-    return String(value);
+    return String(value).replace('.', separatorChar());
 }
 
 /**
  * Auto-formatting rule: the user types plain digits and the 3rd digit becomes
- * the decimal ("374" -> "37.4"). Input is capped at 3 digits.
+ * the decimal ("374" -> "37.4"), using the user's chosen decimal separator.
+ * Input is capped at 3 digits.
  */
 function displayFromDigits(digits: string): string {
     if (digits.length < 3) {
         return digits;
     }
 
-    return `${digits.slice(0, 2)}.${digits.slice(2)}`;
+    return `${digits.slice(0, 2)}${separatorChar()}${digits.slice(2)}`;
 }
 
 function parsedValue(): number | null {
@@ -46,7 +52,7 @@ function parsedValue(): number | null {
         return null;
     }
 
-    const value = Number.parseFloat(display.value);
+    const value = Number.parseFloat(display.value.replace(',', '.'));
 
     return Number.isNaN(value) ? null : value;
 }
