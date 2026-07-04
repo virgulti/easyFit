@@ -1,3 +1,4 @@
+import { getDecimalSeparator } from '@/composables/useNumberFormat';
 import type { BmiBand, BmiBandColor } from '@/types';
 
 /**
@@ -8,13 +9,18 @@ export function todayIsoDate(): string {
 }
 
 /**
- * Format a decimal value with a fixed number of digits ("80.5" -> "80.5").
+ * Format a decimal value with a fixed number of digits ("80.5" -> "80.5"), using the user's
+ * chosen decimal separator (visual only: the underlying value/API payloads are unaffected).
  */
 export function formatDecimal(
     value: string | number,
     decimals: number = 1,
 ): string {
-    return Number(value).toFixed(decimals);
+    const formatted = Number(value).toFixed(decimals);
+
+    return getDecimalSeparator() === 'comma'
+        ? formatted.replace('.', ',')
+        : formatted;
 }
 
 /**
